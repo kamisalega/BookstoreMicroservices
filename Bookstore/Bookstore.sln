@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookstore.Services.EventCatalog", "Bookstore.Services.EventCatalog\Bookstore.Services.EventCatalog.csproj", "{17822CBF-DDB2-4099-9699-1B49417B60A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookstore.Services.BookCatalog", "Bookstore.Services.BookCatalog\Bookstore.Services.BookCatalog.csproj", "{17822CBF-DDB2-4099-9699-1B49417B60A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{027E2049-5E6C-4E14-9E35-F802505D9F43}"
 EndProject
