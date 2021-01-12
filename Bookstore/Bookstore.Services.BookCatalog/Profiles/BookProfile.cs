@@ -7,8 +7,10 @@ namespace Bookstore.Services.BookCatalog.Profiles
     {
         public BookProfile()
         {
-            CreateMap<Entities.Book, Models.BookDto>().ReverseMap();
-            CreateMap<Entities.Book, Book>().ReverseMap();
+            CreateMap<Entities.Book, Models.BookDto>()
+                .ForMember(dest => dest.CategoryName, 
+                    opts => opts.MapFrom(src => src.Category.Name));
+            
         }
        
     }
