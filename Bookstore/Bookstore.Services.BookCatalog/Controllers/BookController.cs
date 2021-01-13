@@ -27,7 +27,7 @@ namespace Bookstore.Services.BookCatalog.Controllers
             return Ok(_mapper.Map<List<Models.BookDto>>(result));
         }
 
-        [HttpGet("bookId}")]
+        [HttpGet("{bookId}")]
         public async Task<ActionResult<Models.BookDto>> GetById(Guid bookId)
         {
             var result = await _bookRepository.GetBookById(bookId);
