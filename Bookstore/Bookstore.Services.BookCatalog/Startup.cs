@@ -10,14 +10,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bookstore.Services.BookCatalog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
+                //.AddJsonFile($"appSettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
         public IConfiguration Configuration { get; }
 
@@ -25,6 +33,33 @@ namespace Bookstore.Services.BookCatalog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers(setupActions =>
+            {
+                setupActions.ReturnHttpNotAcceptable = true;
+            })
+                .AddXmlDataContractSerializerFormatters()
+                .ConfigureApiBehaviorOptions(setupAction =>
+                    {
+                        setupAction.InvalidModelStateResponseFactory = context =>
+                        {
+                            var problemDetails = new ValidationProblemDetails(context.ModelState)
+                            {
+                                Type = "https://library.com/modelvalidationproblem",
+                                Title = "One more validation errors occurred.",
+                                Status = StatusCodes.Status422UnprocessableEntity,
+                                Detail = "See the errors property for details.",
+                                Instance = context.HttpContext.Request.Path
+                            };
+
+                            problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+
+                            return new UnprocessableEntityObjectResult(problemDetails)
+                            {
+                                ContentTypes = { "application/problem+json" }
+                            };
+                        };
+                    }
+                    );
             services.AddDbContext<BookCatalogDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
@@ -32,7 +67,7 @@ namespace Bookstore.Services.BookCatalog
             services.AddScoped<IBookRepository, BookRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddControllers();
+            
 
             services.AddSwaggerGen(c =>
             {
