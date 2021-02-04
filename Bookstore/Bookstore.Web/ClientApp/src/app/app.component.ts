@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
     vcr: ViewContainerRef
   ) {
     // TODO: Set Taster Root (Overlay) container
-    this.toastr.setRootViewContainerRef(vcr);
+    //this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
