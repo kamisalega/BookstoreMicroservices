@@ -4,11 +4,18 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {HttpClientJsonpModule, HttpClientModule} from "@angular/common/http";
+import { HeaderComponent } from './components/header/header.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PagerComponent } from './components/pager/pager.component';
+import { IdentityComponent } from './components/identity/identity.component';
 
 
 @NgModule({
   declarations: [
-    Header
+    HeaderComponent,
+    PageNotFoundComponent,
+    PagerComponent,
+    IdentityComponent
   ],
   imports: [
     CommonModule,

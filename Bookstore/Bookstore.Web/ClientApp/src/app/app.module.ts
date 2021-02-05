@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {routing} from "./app.routes";
+import {SharedModule} from "./shared/shared.module";
+import {CatalogModule} from "./catalog/catalog.module";
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import {routing} from "./app.routes";
     HttpClientModule,
     routing,
     SharedModule.forRoot(),
+    CatalogModule,
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
