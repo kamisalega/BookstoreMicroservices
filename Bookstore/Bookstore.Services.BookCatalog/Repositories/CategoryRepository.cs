@@ -2,21 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bookstore.Services.BookCatalog.DbContexts;
 using Bookstore.Services.BookCatalog.Entities;
 using Bookstore.Services.BookCatalog.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Services.BookCatalog.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        public Task<IEnumerable<Category>> GetAllCategories()
+        private readonly BookCatalogDbContext _bookCatalogDbContext;
+
+        public CategoryRepository(BookCatalogDbContext bookCatalogDbContext)
         {
-            throw new NotImplementedException();
+            _bookCatalogDbContext = bookCatalogDbContext;
         }
 
-        public Task<Category> GetCategoryById(string categoryId)
+        public async Task<IEnumerable<Category>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            return await _bookCatalogDbContext.Categories.ToListAsync();
+        }
+
+        public async Task<Category> GetCategoryById(string categoryId)
+        {
+            return await _bookCatalogDbContext.Categories.Where(x => x.CategoryId.ToString() == categoryId).FirstOrDefaultAsync();
         }
     }
 }

@@ -2,20 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bookstore.Services.BookCatalog.DbContexts;
 using Bookstore.Services.BookCatalog.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Services.BookCatalog.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        public Task<IEnumerable<Book>> GetBooks(Guid categoryId)
+        private readonly BookCatalogDbContext _bookCatalogDbContext;
+
+        public BookRepository(BookCatalogDbContext bookCatalogDbContext)
         {
-            throw new NotImplementedException();
+            _bookCatalogDbContext = bookCatalogDbContext;
         }
 
-        public Task<Book> GetBookById(Guid eventId)
+        public async Task<IEnumerable<Book>> GetBooks(Guid categoryId)
         {
-            throw new NotImplementedException();
+            return await _bookCatalogDbContext.Books
+                .Include(x => x.Category)
+                .Where(x => (x.CategoryId == categoryId || categoryId == Guid.Empty)).ToListAsync();        }
+
+        public async Task<Book> GetBookById(Guid bookId)
+        {
+            return await _bookCatalogDbContext.Books
+                .Include(x => x.Category)
+                .Where(x => x.Id == bookId).FirstOrDefaultAsync();
         }
 
         public Book GetBook(Guid authorId, Guid bookId)
