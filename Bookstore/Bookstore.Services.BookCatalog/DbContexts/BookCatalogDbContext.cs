@@ -29,13 +29,13 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                 CategoryId = horrorGuid,
                 Name = "Horror"
             });
-            
+
             modelBuilder.Entity<Category>().HasData(new Category
             {
                 CategoryId = fantasyGuid,
                 Name = "Fantasy"
             });
-            
+
             modelBuilder.Entity<Category>().HasData(new Category
             {
                 CategoryId = variousGuid,
@@ -103,7 +103,10 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     Id = Guid.Parse("c7ba6add-09c4-45f8-8dd0-eaca221e5d93"),
                     AuthorId = Guid.Parse("25320c5e-f58a-4b1f-b63a-8ee07a840bdf"),
                     CategoryId = horrorGuid,
+                    Price = 49.99,
                     Title = "The Shining",
+                    ImageUrl = "http://prodimage.images-bn.com/pimages/9780345806789_p0_v2_s1200x630.jpg",
+                    Date = DateTime.Now.AddMonths(1),
                     Description =
                         "The Shining is a horror novel by American author Stephen King. Published in 1977, it is King's third published novel and first hardback bestseller: the success of the book firmly established King as a preeminent author in the horror genre. "
                 },
@@ -113,6 +116,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("a1da1d8e-1988-4634-b538-a01709477b77"),
                     CategoryId = fantasyGuid,
                     Title = "Misery",
+                    Price = 49.99,
+                    ImageUrl = "http://2.bp.blogspot.com/-esMqeTYoTvo/Vd3uKSb0NqI/AAAAAAAACJA/C9LkuKaBoVI/s1600/misery.jpg",
+                    Date = DateTime.Now.AddMonths(2),
                     Description =
                         "Misery is a 1987 psychological horror novel by Stephen King. This novel was nominated for the World Fantasy Award for Best Novel in 1988, and was later made into a Hollywood film and an off-Broadway play of the same name."
                 },
@@ -122,6 +128,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("a1da1d8e-1988-4634-b538-a01709477b77"),
                     CategoryId = scienceFictionGuid,
                     Title = "It",
+                    Price = 49.99,
+                    ImageUrl = "http://upload.wikimedia.org/wikipedia/en/thumb/5/5a/It_cover.jpg/220px-It_cover.jpg",
+                    Date = DateTime.Now.AddMonths(3),
                     Description =
                         "It is a 1986 horror novel by American author Stephen King. The story follows the exploits of seven children as they are terrorized by the eponymous being, which exploits the fears and phobias of its victims in order to disguise itself while hunting its prey. 'It' primarily appears in the form of a clown in order to attract its preferred prey of young children."
                 },
@@ -131,6 +140,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("a1da1d8e-1988-4634-b538-a01709477b77"),
                     CategoryId = horrorGuid,
                     Title = "The Stand",
+                    Price = 49.99,
+                    ImageUrl = "http://upload.wikimedia.org/wikipedia/en/thumb/5/5a/It_cover.jpg/220px-It_cover.jpg",
+                    Date = DateTime.Now.AddMonths(4),
                     Description =
                         "The Stand is a post-apocalyptic horror/fantasy novel by American author Stephen King. It expands upon the scenario of his earlier short story 'Night Surf' and outlines the total breakdown of society after the accidental release of a strain of influenza that had been modified for biological warfare causes an apocalyptic pandemic which kills off the majority of the world's human population."
                 },
@@ -140,6 +152,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("76053df4-6687-4353-8937-b45556748abe"),
                     CategoryId = fantasyGuid,
                     Title = "A Game of Thrones",
+                    Price = 49.99,
+                    ImageUrl = "http://upload.wikimedia.org/wikipedia/en/thumb/5/5a/It_cover.jpg/220px-It_cover.jpg",
+                    Date = DateTime.Now.AddMonths(5),
                     Description =
                         "A Game of Thrones is the first novel in A Song of Ice and Fire, a series of fantasy novels by American author George R. R. Martin. It was first published on August 1, 1996."
                 },
@@ -149,6 +164,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("76053df4-6687-4353-8937-b45556748abe"),
                     CategoryId = variousGuid,
                     Title = "The Winds of Winter",
+                    Price = 49.99,
+                    ImageUrl = "http://cdn-lubimyczytac.pl/upload/books/166000/166640/157958-352x500.jpg",
+                    Date = DateTime.Now.AddMonths(6),
                     Description = "Forthcoming 6th novel in A Song of Ice and Fire."
                 },
                 new Book()
@@ -157,6 +175,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("76053df4-6687-4353-8937-b45556748abe"),
                     CategoryId = fantasyGuid,
                     Title = "A Dance with Dragons",
+                    Price = 49.99,
+                    ImageUrl = "http://cdn-lubimyczytac.pl/upload/books/166000/166640/157958-352x500.jpg",
+                    Date = DateTime.Now.AddMonths(7),
                     Description =
                         "A Dance with Dragons is the fifth of seven planned novels in the epic fantasy series A Song of Ice and Fire by American author George R. R. Martin."
                 },
@@ -166,6 +187,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("412c3012-d891-4f5e-9613-ff7aa63e6bb3"),
                     CategoryId = fantasyGuid,
                     Title = "American Gods",
+                    Price = 49.99,
+                    ImageUrl = "http://cdn-lubimyczytac.pl/upload/books/4876000/4876555/715391-352x500.jpg",
+                    Date = DateTime.Now.AddMonths(8),
                     Description =
                         "American Gods is a Hugo and Nebula Award-winning novel by English author Neil Gaiman. The novel is a blend of Americana, fantasy, and various strands of ancient and modern mythology, all centering on the mysterious and taciturn Shadow."
                 },
@@ -175,6 +199,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("578359b7-1967-41d6-8b87-64ab7605587e"),
                     CategoryId = variousGuid,
                     Title = "Speechless",
+                    ImageUrl = "http://cdn-lubimyczytac.pl/upload/books/4876000/4876555/715391-352x500.jpg",
+                    Price = 49.99,
+                    Date = DateTime.Now.AddMonths(9),
                     Description =
                         "Good-natured and often humorous, Speechless is at times a 'song of curses', as Lanoye describes the conflicts with his beloved diva of a mother and her brave struggle with decline and death."
                 },
@@ -184,6 +211,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("f74d6899-9ed2-4137-9876-66b070553f8f"),
                     CategoryId = scienceFictionGuid,
                     Title = "The Hitchhiker's Guide to the Galaxy",
+                    Price = 49.99,
+                    ImageUrl = "https://cdn-lubimyczytac.pl/upload/books/254000/254602/380738-352x500.jpg",
+                    Date = DateTime.Now.AddMonths(10),
                     Description =
                         "The Hitchhiker's Guide to the Galaxy is the first of five books in the Hitchhiker's Guide to the Galaxy comedy science fiction 'trilogy' by Douglas Adams."
                 },
@@ -193,6 +223,9 @@ namespace Bookstore.Services.BookCatalog.DbContexts
                     AuthorId = Guid.Parse("a1da1d8e-1988-4634-b538-a01709477b77"),
                     CategoryId = variousGuid,
                     Title = "Easy Money",
+                    Price = 49.99,
+                    ImageUrl = "https://cdn-lubimyczytac.pl/upload/books/27000/27802/352x500.jpg",
+                    Date = DateTime.Now.AddMonths(11),
                     Description =
                         "Easy Money or Snabba cash is a novel from 2006 by Jens Lapidus. It has been a success in term of sales, and the paperback was the fourth best seller of Swedish novels in 2007."
                 }

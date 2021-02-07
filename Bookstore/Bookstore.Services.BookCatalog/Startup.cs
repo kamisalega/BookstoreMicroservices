@@ -17,6 +17,7 @@ namespace Bookstore.Services.BookCatalog
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -27,16 +28,14 @@ namespace Bookstore.Services.BookCatalog
 
             Configuration = builder.Build();
         }
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(setupActions =>
-            {
-                setupActions.ReturnHttpNotAcceptable = true;
-            })
+            services.AddControllers(setupActions => { setupActions.ReturnHttpNotAcceptable = true; })
                 .AddXmlDataContractSerializerFormatters()
                 .ConfigureApiBehaviorOptions(setupAction =>
                     {
@@ -55,23 +54,32 @@ namespace Bookstore.Services.BookCatalog
 
                             return new UnprocessableEntityObjectResult(problemDetails)
                             {
-                                ContentTypes = { "application/problem+json" }
+                                ContentTypes = {"application/problem+json"}
                             };
                         };
                     }
-                    );
+                );
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44339",
+                            "https://localhost:44390");
+                    });
+            });
             services.AddDbContext<BookCatalogDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            
+
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookDto Catalog API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "BookDto Catalog API", Version = "v1"});
             });
         }
 
@@ -84,23 +92,17 @@ namespace Bookstore.Services.BookCatalog
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookDto Catalog API V1");
-
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookDto Catalog API V1"); });
 
             app.UseRouting();
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
