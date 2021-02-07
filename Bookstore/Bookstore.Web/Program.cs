@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +21,15 @@ namespace Bookstore.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .ConfigureAppConfiguration((builderContext, config) => { config.AddEnvironmentVariables(); })
+                        .ConfigureLogging((hostingContext, builder) =>
+                        {
+                            builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                            builder.AddConsole();
+                            builder.AddDebug();
+                        });
                 });
     }
 }
