@@ -30,7 +30,7 @@ namespace Bookstore.Services.BookCatalog.Controllers
             var result = await _bookRepository.GetBooks(categoryId, pageSize, pageIndex);
 
             var booksOnPage = _mapper.Map<List<Models.BookDto>>(result);
-            var model = new PaginatedItemsViewModel<Models.BookDto>(pageSize, pageIndex, totalCountBooks,booksOnPage);
+            var model = new PaginatedItemsViewModel<Models.BookDto>(pageSize, pageIndex, totalCountBooks, booksOnPage);
 
             return Ok(model);
         }
