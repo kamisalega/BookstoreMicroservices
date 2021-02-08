@@ -17,11 +17,16 @@ namespace Bookstore.Services.BookCatalog.Repositories
             _bookCatalogDbContext = bookCatalogDbContext;
         }
 
-        public async Task<IEnumerable<Book>> GetBooks(Guid categoryId)
+        public async Task<IEnumerable<Book>> GetBooks(Guid categoryId, int pageSize, int pageIndex)
         {
             return await _bookCatalogDbContext.Books
                 .Include(x => x.Category)
-                .Where(x => (x.CategoryId == categoryId || categoryId == Guid.Empty)).ToListAsync();        }
+                .Where(x => (x.CategoryId == categoryId || categoryId == Guid.Empty))
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
 
         public async Task<Book> GetBookById(Guid bookId)
         {
@@ -48,6 +53,11 @@ namespace Bookstore.Services.BookCatalog.Repositories
         public void DeleteBook(Book book)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<long> GetTotalCountBooks()
+        {
+            return await _bookCatalogDbContext.Books.LongCountAsync();
         }
     }
 }

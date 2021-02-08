@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Bookstore.Services.BookCatalog.Models;
+using Bookstore.Services.BookCatalog.ViewModel;
 
 namespace Bookstore.Services.BookCatalog.Controllers
 {
@@ -13,6 +15,7 @@ namespace Bookstore.Services.BookCatalog.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
+
         public BookController(IBookRepository bookRepository, IMapper mapper)
         {
             _bookRepository = bookRepository;
@@ -20,11 +23,16 @@ namespace Bookstore.Services.BookCatalog.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Models.BookDto>>> Get(
-            [FromQuery] Guid categoryId)
+        public async Task<ActionResult<IEnumerable<BookDto>>> Get([FromQuery] Guid categoryId,
+            [FromQuery] int pageSize = 10, [FromQuery] int pageIndex = 0)
         {
-            var result = await _bookRepository.GetBooks(categoryId);
-            return Ok(_mapper.Map<List<Models.BookDto>>(result));
+            var totalCountBooks = await _bookRepository.GetTotalCountBooks();
+            var result = await _bookRepository.GetBooks(categoryId, pageSize, pageIndex);
+
+            var booksOnPage = _mapper.Map<List<Models.BookDto>>(result);
+            var model = new PaginatedItemsViewModel<Models.BookDto>(pageSize, pageIndex, totalCountBooks,booksOnPage);
+
+            return Ok(model);
         }
 
         [HttpGet("{bookId}")]
