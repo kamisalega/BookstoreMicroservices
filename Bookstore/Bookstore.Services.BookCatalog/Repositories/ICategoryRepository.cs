@@ -9,6 +9,7 @@ namespace Bookstore.Services.BookCatalog.Services
     public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> GetAllCategories();
-        Task<Category> GetCategoryById(string categoryId);
+        Task<Category> GetCategoryById(Guid categoryId);
+        IQueryable<Book> GetBooksByCategoryId(Guid categoryId);
     }
 }
