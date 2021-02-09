@@ -20,14 +20,14 @@ export class CatalogService {
     });
   }
 
-  getCatalog(pageIndex: number, pageSize: number, category: number, type: number): Observable<ICatalog> {
+  getCatalog(pageIndex: number, pageSize: number, category: string, type: number): Observable<ICatalog> {
     let url = this.catalogUrl;
 
-    // if (type) {
-    //   url = this.catalogUrl + '/type/' + type.toString() + '/brand/' + ((brand) ? brand.toString() : '');
-    // } else if (category) {
-    //   url = this.catalogUrl + '/type/all' + '/brand/' + ((brand) ? brand.toString() : '');
-    // }
+    if (type) {
+      // url = this.catalogUrl + '/type/' + type.toString() + '/brand/' + ((brand) ? brand.toString() : '');
+    } else if (category) {
+      url = this.categoryUrl + '/' + ((category) ? category.toString() : '');
+    }
 
     url = url + '?pageIndex=' + pageIndex + '&pageSize=' + pageSize;
 

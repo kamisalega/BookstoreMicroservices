@@ -20,7 +20,7 @@ export class CatalogComponent implements OnInit {
   categories: ICatalogCategory[];
   // types: ICatalogType[];
   catalog: ICatalog;
-  categorySelected: number;
+  categorySelected: string;
   typeSelected: number;
   paginationInfo: IPager;
   authenticated: boolean = false;
@@ -60,7 +60,7 @@ export class CatalogComponent implements OnInit {
     this.getCatalog(this.paginationInfo.itemsPage, this.paginationInfo.actualPage, this.categorySelected, this.typeSelected);
   }
 
-  onCategoryFilterChanged(event: any, value: number) {
+  onCategoryFilterChanged(event: any, value: string) {
     event.preventDefault();
     this.categorySelected = value;
   }
@@ -81,9 +81,9 @@ export class CatalogComponent implements OnInit {
   //   this.basketService.addItemToBasket(item);
   // }
 
-  getCatalog(pageSize: number, pageIndex: number, brand?: number, type?: number) {
+  getCatalog(pageSize: number, pageIndex: number, category?: string, type?: number) {
     this.errorReceived = false;
-    this.service.getCatalog(pageIndex, pageSize, brand, type)
+    this.service.getCatalog(pageIndex, pageSize, category, type)
       .pipe(catchError((err) => this.handleError(err)))
       .subscribe(catalog => {
         this.catalog = catalog;
@@ -108,7 +108,7 @@ export class CatalogComponent implements OnInit {
   getCategories() {
     this.service.getCategories().subscribe(categories => {
       this.categories = categories;
-      let allCategories = {id: null, name: 'Wszystkie'};
+      let allCategories = {categoryId: null, name: 'Wszystkie'};
       this.categories.unshift(allCategories);
     });
   }

@@ -11,7 +11,7 @@
     </div>
             <label class="bs-catalog-label" data-title="kategorie">
               <select class="bs-catalog-filter" (change)="onCategoryFilterChanged($event, $event.target.value)">
-                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                <option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</option>
               </select>
             </label>
 <!--            <label class="bs-catalog-label" data-title="type">-->
