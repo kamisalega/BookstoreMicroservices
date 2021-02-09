@@ -23,9 +23,22 @@ namespace Bookstore.Services.BookCatalog.Repositories
             return await _bookCatalogDbContext.Categories.ToListAsync();
         }
 
-        public async Task<Category> GetCategoryById(string categoryId)
+        public async Task<Category> GetCategoryById(Guid categoryId)
         {
-            return await _bookCatalogDbContext.Categories.Where(x => x.CategoryId.ToString() == categoryId).FirstOrDefaultAsync();
+            return await _bookCatalogDbContext.Categories.Where(x => x.CategoryId == categoryId)
+                .FirstOrDefaultAsync();
+        }
+
+        public IQueryable<Book> GetBooksByCategoryId(Guid catalogCategoryId)
+        {
+            var books = (IQueryable<Book>) _bookCatalogDbContext.Books;
+
+            if (catalogCategoryId != Guid.Empty)
+            {
+                books = books.Where(cb => cb.CategoryId.Equals(catalogCategoryId));
+            }
+
+            return books;
         }
     }
 }
