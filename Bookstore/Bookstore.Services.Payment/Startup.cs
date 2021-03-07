@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bookstore.Integration.MessagingBus;
+using Bookstore.Services.Payment.Services;
+using Bookstore.Services.Payment.Worker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,11 +29,13 @@ namespace Bookstore.Services.Payment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHostedService<ServiceBusListener>();
+            services.AddHttpClient<IExternalGatewayPaymentService, ExternalGatewayPaymentService>(c =>
+                c.BaseAddress = new Uri(Configuration["ApiConfigs:ExternalPaymentGateway:Uri"]));
+
+            services.AddSingleton<IMessageBus, AzServiceBusMessageBus>();
+
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Bookstore.Services.Payment", Version = "v1"});
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,8 +44,6 @@ namespace Bookstore.Services.Payment
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bookstore.Services.Payment v1"));
             }
 
             app.UseHttpsRedirection();
@@ -49,7 +52,10 @@ namespace Bookstore.Services.Payment
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
