@@ -10,7 +10,6 @@ namespace Bookstore.Services.Marketing.Services
     public class BasketChangeBookService : IBasketChangeBookService
     {
         private readonly HttpClient client;
-
         public BasketChangeBookService(HttpClient client)
         {
             this.client = client;

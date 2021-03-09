@@ -5,10 +5,11 @@ using AutoMapper;
 using Bookstore.Services.Marketing.Entities;
 using Bookstore.Services.Marketing.Repositories;
 using Bookstore.Services.Marketing.Services;
+using Microsoft.Extensions.Hosting;
 
 namespace Bookstore.Services.Marketing.Worker
 {
-    public class TimedBasketChangeBookService
+    public class TimedBasketChangeBookService  : IHostedService, IDisposable
     {
         private Timer _timer;
         private readonly IBasketChangeBookService basketChangeBookService;
