@@ -9,6 +9,8 @@ import {ICatalogCategory} from "../shared/models/catalogCategory.model";
 
 import {Observable, Subscription} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {ICatalogItem} from "../shared/models/catalogItem.model";
+import {BasketWrapperService} from "../shared/services/basket.wrapper.service";
 
 
 @Component({
@@ -29,7 +31,7 @@ export class CatalogComponent implements OnInit {
 
   constructor(
     private service: CatalogService,
-    //private basketService: BasketWrapperService,
+    private basketService: BasketWrapperService,
     private configurationService: ConfigurationService,
     // private securityService: SecurityService
   ) {
@@ -77,9 +79,9 @@ export class CatalogComponent implements OnInit {
     this.getCatalog(this.paginationInfo.itemsPage, value);
   }
 
-  // addToCart(item: ICatalogItem) {
-  //   this.basketService.addItemToBasket(item);
-  // }
+  addToCart(item: ICatalogItem) {
+    this.basketService.addItemToBasket(item);
+  }
 
   getCatalog(pageSize: number, pageIndex: number, category?: string, type?: number) {
     this.errorReceived = false;

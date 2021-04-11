@@ -29,9 +29,9 @@
 
     <div class="bs-catalog-items row">
       <div class="bs-catalog-item col-md-4" *ngFor="let item of catalog?.data">
+
         <img class="bs-catalog-thumbnail" src="{{item.imageUrl}}"/>
-        <button [ngClass]="{'bs-catalog-button': true, 'is-disabled': !authenticated}">
-          <!--        <button [ngClass]="{'bs-catalog-button': true, 'is-disabled': !authenticated}" (click)="addToCart(item)">-->
+        <button [ngClass]="{'bs-catalog-button': true, 'is-disabled': !authenticated} " (click)="addToCart(item)">
           [ DODAJ DO KOSZYKA ]
         </button>
 

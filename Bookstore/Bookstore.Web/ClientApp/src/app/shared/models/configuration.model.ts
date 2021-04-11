@@ -1,4 +1,5 @@
 export interface IConfiguration {
-  purchaseUrl: string
+  purchaseUrl: string,
+  identityUrl: string,
   activateCampaignDetailFunction: boolean
 }
