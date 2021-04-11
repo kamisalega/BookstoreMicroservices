@@ -15,7 +15,7 @@ namespace Bookstore.Services.Ordering.Messaging
 {
     public class AzServiceBusConsumer : IAzServiceBusConsumer
     {
-        private readonly string subscriptionName = "globoticketorder";
+        private readonly string subscriptionName = "bookstoreorder";
         private readonly IReceiverClient checkoutMessageReceiverClient;
         private readonly IReceiverClient orderPaymentUpdateMessageReceiverClient;
 
@@ -24,27 +24,27 @@ namespace Bookstore.Services.Ordering.Messaging
         private readonly OrderRepository _orderRepository;
         private readonly IMessageBus _messageBus;
 
-        private readonly string checkoutMessageTopic;
-        private readonly string orderPaymentRequestMessageTopic;
-        private readonly string orderPaymentUpdatedMessageTopic;
+        private readonly string _checkoutMessageTopic;
+        private readonly string _orderPaymentRequestMessageTopic;
+        private readonly string _orderPaymentUpdatedMessageTopic;
 
         public AzServiceBusConsumer(IConfiguration configuration, IMessageBus messageBus,
             OrderRepository orderRepository)
         {
             _configuration = configuration;
             _orderRepository = orderRepository;
-            // _logger = logger;
+             //_logger = logger;
             _messageBus = messageBus;
 
             var serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
-            checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
-            orderPaymentRequestMessageTopic = _configuration.GetValue<string>("OrderPaymentRequestMessageTopic");
-            orderPaymentUpdatedMessageTopic = _configuration.GetValue<string>("OrderPaymentUpdatedMessageTopic");
+            _checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
+            _orderPaymentRequestMessageTopic = _configuration.GetValue<string>("OrderPaymentRequestMessageTopic");
+            _orderPaymentUpdatedMessageTopic = _configuration.GetValue<string>("OrderPaymentUpdatedMessageTopic");
 
             checkoutMessageReceiverClient =
-                new SubscriptionClient(serviceBusConnectionString, checkoutMessageTopic, subscriptionName);
+                new SubscriptionClient(serviceBusConnectionString, _checkoutMessageTopic, subscriptionName);
             orderPaymentUpdateMessageReceiverClient = new SubscriptionClient(serviceBusConnectionString,
-                orderPaymentUpdatedMessageTopic, subscriptionName);
+                _orderPaymentUpdatedMessageTopic, subscriptionName);
         }
 
         public void Start()
@@ -98,7 +98,7 @@ namespace Bookstore.Services.Ordering.Messaging
 
             try
             {
-                await _messageBus.PublishMessage(orderPaymentRequestMessage, orderPaymentRequestMessageTopic);
+                await _messageBus.PublishMessage(orderPaymentRequestMessage, _orderPaymentRequestMessageTopic);
             }
             catch (Exception e)
             {
