@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace Bookstore.Services.BookCatalog.Models
 {
+
     public class BookDto
     {
         public Guid Id { get; set; }

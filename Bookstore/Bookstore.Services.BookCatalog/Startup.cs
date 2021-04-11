@@ -18,15 +18,9 @@ namespace Bookstore.Services.BookCatalog
     public class Startup
     {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-        public Startup(IHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
-                //.AddJsonFile($"appSettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -79,7 +73,7 @@ namespace Bookstore.Services.BookCatalog
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "BookDto Catalog API", Version = "v1"});
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Book Catalog API", Version = "v1"});
             });
         }
 
@@ -92,15 +86,17 @@ namespace Bookstore.Services.BookCatalog
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(MyAllowSpecificOrigins);
+
 
             app.UseSwagger();
 
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookDto Catalog API V1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book Catalog API V1"); });
 
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
