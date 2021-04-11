@@ -8,6 +8,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {routing} from "./app.routes";
 import {SharedModule} from "./shared/shared.module";
 import {CatalogModule} from "./catalog/catalog.module";
+import {BasketModule} from "./basket/basket.module";
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {CatalogModule} from "./catalog/catalog.module";
     routing,
     SharedModule.forRoot(),
     CatalogModule,
+    BasketModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
