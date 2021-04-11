@@ -10,8 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Bookstore.Services.BookCatalog
 {
@@ -29,7 +32,14 @@ namespace Bookstore.Services.BookCatalog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(setupActions => { setupActions.ReturnHttpNotAcceptable = true; })
+            var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+            services.AddControllers(setupActions =>
+                {
+                    setupActions.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
+                    setupActions.ReturnHttpNotAcceptable = true;
+                })
                 .AddXmlDataContractSerializerFormatters()
                 .ConfigureApiBehaviorOptions(setupAction =>
                     {
@@ -53,6 +63,7 @@ namespace Bookstore.Services.BookCatalog
                         };
                     }
                 );
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,
@@ -75,6 +86,13 @@ namespace Bookstore.Services.BookCatalog
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Book Catalog API", Version = "v1"});
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5010";
+                    options.Audience = "bookstore";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,6 +111,8 @@ namespace Bookstore.Services.BookCatalog
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Book Catalog API V1"); });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
