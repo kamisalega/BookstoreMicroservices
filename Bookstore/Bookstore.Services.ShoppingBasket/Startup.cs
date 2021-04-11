@@ -53,8 +53,30 @@ namespace Bookstore.Services.ShoppingBasket
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shopping Basket API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Shopping Basket API", Version = "v1"});
             });
+        }
+
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Basket API V1"); });
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
 
         private IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
@@ -69,38 +91,7 @@ namespace Bookstore.Services.ShoppingBasket
             return HttpPolicyExtensions.HandleTransientHttpError()
                 .WaitAndRetryAsync(5,
                     retryAttempt => TimeSpan.FromMilliseconds(Math.Pow(1.5, retryAttempt) * 1000),
-                    (_, waitingTime) =>
-                    {
-                        Console.WriteLine("Retrying due to Polly retry policy");
-                    });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Basket API V1");
-
-            });
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+                    (_, waitingTime) => { Console.WriteLine("Retrying due to Polly retry policy"); });
         }
     }
 }
