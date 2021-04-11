@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Bookstore.Services.Discount.Entities;
 
-namespace Bookstore.Services.Discount.Repositories.Repositories
+namespace Bookstore.Services.Discount.Repositories
 {
     public interface ICouponRepository
     {

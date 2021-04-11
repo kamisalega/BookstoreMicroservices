@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bookstore.Services.Discount.DbContexts;
 using Bookstore.Services.Discount.Entities;
-using Bookstore.Services.Discount.Repositories.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bookstore.Services.Discount.Repositories
