@@ -18,19 +18,39 @@ namespace Bookstore.Services.Identity
 
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
         {
-
+            new ApiResource("bookstore", "Bookstore APIs")
+            {
+                Scopes = {"bookstore.fullaccess"}
+            }
         };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-
+                new ApiScope("bookstore.fullaccess")
             };
 
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
-
+                new Client()
+                {
+                    ClientName = "Bookstore Machine 2 Machine Client",
+                    ClientId = "bookstorem2m",
+                    ClientSecrets = {new Secret("eac7008f-1b35-4325-ac8d-4a71932e6088".Sha256())},
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedScopes = {"bookstore.fullaccess"}
+                },
+                new Client()
+                {
+                    ClientName = "Bookstore Interactive Client",
+                    ClientId = "bookstoreinteractive",
+                    ClientSecrets = {new Secret("ce766e16-df99-411d-8d31-0f5bbc6b8eba".Sha256())},
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = {"https://localhost:5000/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
+                    AllowedScopes = {"openid", "profile", "bookstore.fullaccess"}
+                }
             };
     }
 }
