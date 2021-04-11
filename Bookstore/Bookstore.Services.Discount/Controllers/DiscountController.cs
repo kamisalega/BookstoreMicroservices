@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bookstore.Services.Discount.Models;
-using Bookstore.Services.Discount.Repositories.Repositories;
+using Bookstore.Services.Discount.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
