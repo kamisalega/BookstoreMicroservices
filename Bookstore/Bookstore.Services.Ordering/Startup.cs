@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bookstore.Integration.MessagingBus;
 using Bookstore.Services.Ordering.DbContexts;
+using Bookstore.Services.Ordering.Extensions;
 using Bookstore.Services.Ordering.Messaging;
 using Bookstore.Services.Ordering.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -64,17 +65,30 @@ namespace Bookstore.Services.Ordering
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bookstore.Services.Ordering v1"));
             }
 
             app.UseHttpsRedirection();
 
+
             app.UseRouting();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ordering API V1");
+
+            });
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            app.UseAzServiceBusConsumer();
         }
     }
 }
