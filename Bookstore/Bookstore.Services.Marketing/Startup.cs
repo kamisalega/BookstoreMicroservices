@@ -43,9 +43,9 @@ namespace Bookstore.Services.Marketing
             services.AddHttpClient<IBasketChangeBookService, BasketChangeBookService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiConfigs:ShoppingBasket:Uri"]));
 
-            services.AddSwaggerGen(c =>
+            services.AddDbContext<MarketingDbContext>(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Bookstore.Services.Marketing", Version = "v1"});
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
         }
 
@@ -55,8 +55,6 @@ namespace Bookstore.Services.Marketing
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bookstore.Services.Marketing v1"));
             }
 
             app.UseHttpsRedirection();
@@ -65,7 +63,10 @@ namespace Bookstore.Services.Marketing
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
