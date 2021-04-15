@@ -27,7 +27,8 @@ namespace Bookstore.Services.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("bookstore.fullaccess")
+                new ApiScope("bookcatalog.fullaccess"),
+                new ApiScope("shoppingbasket.fullaccess")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -39,7 +40,7 @@ namespace Bookstore.Services.Identity
                     ClientId = "bookstorem2m",
                     ClientSecrets = {new Secret("eac7008f-1b35-4325-ac8d-4a71932e6088".Sha256())},
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = {"bookstore.fullaccess"}
+                    AllowedScopes = {"bookcatalog.fullaccess"}
                 },
                 new Client()
                 {
@@ -49,7 +50,17 @@ namespace Bookstore.Services.Identity
                     AllowedGrantTypes = GrantTypes.Code,
                     RedirectUris = {"https://localhost:5000/signin-oidc"},
                     PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "bookstore.fullaccess"}
+                    AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess"}
+                },
+                new Client()
+                {
+                    ClientName = "Bookstore Client",
+                    ClientId = "bookstore",
+                    ClientSecrets = {new Secret("ce766e16-df99-411d-8d31-0f5bbc6b8eba".Sha256())},
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RedirectUris = {"https://localhost:5000/signin-oidc"},
+                    PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
+                    AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess"}
                 }
             };
     }

@@ -91,7 +91,7 @@ namespace Bookstore.Services.BookCatalog
                 .AddJwtBearer(options =>
                 {
                     options.Authority = "https://localhost:5010";
-                    options.Audience = "bookstore";
+                    options.Audience = "bookcatalog";
                 });
         }
 
