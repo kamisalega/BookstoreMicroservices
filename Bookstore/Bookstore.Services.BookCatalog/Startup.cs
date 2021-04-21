@@ -21,6 +21,7 @@ namespace Bookstore.Services.BookCatalog
     public class Startup
     {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -93,6 +94,11 @@ namespace Bookstore.Services.BookCatalog
                     options.Authority = "https://localhost:5010";
                     options.Audience = "bookcatalog";
                 });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("CanRead", policy => policy.RequireClaim("scope", "bookcatalog.write","bookcatalog.read"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

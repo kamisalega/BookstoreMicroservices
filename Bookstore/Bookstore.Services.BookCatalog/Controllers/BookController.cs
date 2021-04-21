@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bookstore.Services.BookCatalog.Models;
 using Bookstore.Services.BookCatalog.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bookstore.Services.BookCatalog.Controllers
 {
     [Route("api/books")]
     [ApiController]
+    [Authorize(Policy = "CanRead")]
     public class BookController : ControllerBase
     {
         private readonly IBookRepository _bookRepository;

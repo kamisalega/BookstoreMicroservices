@@ -16,19 +16,26 @@ namespace Bookstore.Services.Identity
                 new IdentityResources.Profile(),
             };
 
-        public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
-        {
-            new ApiResource("bookstore", "Bookstore APIs")
+        public static IEnumerable<ApiResource> ApiResources =>
+            new ApiResource[]
             {
-                Scopes = {"bookstore.fullaccess"}
-            }
-        };
+                new ApiResource("bookcatalog", "Book catalog API")
+                {
+                    Scopes = {"bookcatalog.read", "bookcatalog.write"}
+                },
+                new ApiResource("shoppingbasket", "Shopping basket API")
+                {
+                    Scopes = {"shoppingbasket.fullaccess"}
+                },
+            };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
                 new ApiScope("bookcatalog.fullaccess"),
-                new ApiScope("shoppingbasket.fullaccess")
+                new ApiScope("shoppingbasket.fullaccess"),
+                new ApiScope("bookcatalog.read"),
+                new ApiScope("bookcatalog.write")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -57,10 +64,11 @@ namespace Bookstore.Services.Identity
                     ClientName = "Bookstore Client",
                     ClientId = "bookstore",
                     ClientSecrets = {new Secret("ce766e16-df99-411d-8d31-0f5bbc6b8eba".Sha256())},
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RedirectUris = {"https://localhost:5000/signin-oidc"},
                     PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess"}
+                    AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess",
+                        "bookcatalog.fullaccess", "bookcatalog.write", "bookcatalog.read"}
                 }
             };
     }
