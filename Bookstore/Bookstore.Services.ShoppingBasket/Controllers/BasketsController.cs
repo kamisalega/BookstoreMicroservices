@@ -88,8 +88,6 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         {
             try
             {
-
-
                 //based on basket checkout, fetch the basket lines from repo
                 var basket = await basketRepository.GetBasketById(basketCheckout.BasketId);
 

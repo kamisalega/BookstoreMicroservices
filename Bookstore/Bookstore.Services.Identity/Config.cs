@@ -41,6 +41,15 @@ namespace Bookstore.Services.Identity
         public static IEnumerable<Client> Clients =>
             new Client[]
             {
+                new Client
+                {
+                    ClientId = "shoppingbaskettodownstreamtokenexchangeclient",
+                    ClientName = "Shopping Basket Token Exchange Client",
+                    AllowedGrantTypes = new[] { "urn:ietf:params:oauth:grant-type:token-exchange" },
+                    ClientSecrets = { new Secret("0cdea0bc-779e-4368-b46b-09956f70712c".Sha256()) },
+                    AllowedScopes = {
+                        "openid", "profile", "discount.fullaccess" }
+                },
                 new Client()
                 {
                     ClientName = "Bookstore Machine 2 Machine Client",
