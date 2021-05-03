@@ -27,6 +27,10 @@ namespace Bookstore.Services.Identity
                 {
                     Scopes = {"shoppingbasket.fullaccess"}
                 },
+                new ApiResource("bookstoregateway", "Bookstore Gateway")
+                {
+                    Scopes = {"bookstoregateway.fullaccess"}
+                },
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -35,7 +39,9 @@ namespace Bookstore.Services.Identity
                 new ApiScope("bookcatalog.fullaccess"),
                 new ApiScope("shoppingbasket.fullaccess"),
                 new ApiScope("bookcatalog.read"),
-                new ApiScope("bookcatalog.write")
+                new ApiScope("bookcatalog.write"),
+                new ApiScope("discount.fullaccess"),
+                new ApiScope("bookstoregateway.fullaccess"),
             };
 
         public static IEnumerable<Client> Clients =>
@@ -76,8 +82,13 @@ namespace Bookstore.Services.Identity
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
                     RedirectUris = {"https://localhost:5000/signin-oidc"},
                     PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess",
-                        "bookcatalog.fullaccess", "bookcatalog.write", "bookcatalog.read"}
+                    AllowedScopes = {"openid", "profile",
+                        "bookstoregateway.fullaccess",
+                        "shoppingbasket.fullaccess",
+                        "bookcatalog.fullaccess",
+                        "bookcatalog.write",
+                        "bookcatalog.read",
+                    }
                 }
             };
     }

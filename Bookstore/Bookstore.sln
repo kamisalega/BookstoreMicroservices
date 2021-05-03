@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "External.PaymentGateway", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookstore.Services.Identity", "Bookstore.Services.Identity\Bookstore.Services.Identity.csproj", "{4DE1E088-F899-4E0B-97CB-97A1FD95E075}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{A9B5845E-C954-462A-8E0F-85F782815EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookstore.Gateway", "Bookstore.Gateway\Bookstore.Gateway.csproj", "{2FDEDB20-0818-4534-93FF-E2F5007B0009}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +87,10 @@ Global
 		{4DE1E088-F899-4E0B-97CB-97A1FD95E075}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE1E088-F899-4E0B-97CB-97A1FD95E075}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE1E088-F899-4E0B-97CB-97A1FD95E075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FDEDB20-0818-4534-93FF-E2F5007B0009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FDEDB20-0818-4534-93FF-E2F5007B0009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FDEDB20-0818-4534-93FF-E2F5007B0009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FDEDB20-0818-4534-93FF-E2F5007B0009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +107,7 @@ Global
 		{4E4490ED-8A91-4A55-AFD7-5505BE8C4B99} = {67F29731-1694-4D47-B74C-039C6C098719}
 		{82C16D83-E946-48ED-9C36-B34ED68A20E4} = {6F78A7FA-FBC7-47ED-A7C2-AD4942EFBBC6}
 		{4DE1E088-F899-4E0B-97CB-97A1FD95E075} = {027E2049-5E6C-4E14-9E35-F802505D9F43}
+		{2FDEDB20-0818-4534-93FF-E2F5007B0009} = {A9B5845E-C954-462A-8E0F-85F782815EFE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1AF3CD9-ADAF-4870-A0B5-CB79D448DFCD}
