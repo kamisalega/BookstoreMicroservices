@@ -51,6 +51,17 @@ namespace Bookstore.Services.Identity
 
             builder.AddExtensionGrantValidator<TokenExchangeExtensionGrantValidator>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", corsBuilder =>
+                {
+                    corsBuilder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed(origin => origin == "http://localhost:5051")
+                        .AllowCredentials();
+                });
+            });
+
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {

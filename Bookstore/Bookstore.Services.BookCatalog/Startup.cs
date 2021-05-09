@@ -82,7 +82,6 @@ namespace Bookstore.Services.BookCatalog
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Book Catalog API", Version = "v1"});

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Bookstore.Services.Ordering.Controllers
 {
+    [ApiController]
+    [Route("api/order")]
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;

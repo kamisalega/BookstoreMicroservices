@@ -56,7 +56,7 @@ namespace Bookstore.Services.Identity
                     AllowedScopes = {
                         "openid", "profile", "discount.fullaccess" }
                 },
-                new Client()
+                new Client
                 {
                     ClientName = "Bookstore Machine 2 Machine Client",
                     ClientId = "bookstorem2m",
@@ -64,7 +64,7 @@ namespace Bookstore.Services.Identity
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     AllowedScopes = {"bookcatalog.fullaccess"}
                 },
-                new Client()
+                new Client
                 {
                     ClientName = "Bookstore Interactive Client",
                     ClientId = "bookstoreinteractive",
@@ -74,20 +74,21 @@ namespace Bookstore.Services.Identity
                     PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
                     AllowedScopes = {"openid", "profile", "shoppingbasket.fullaccess"}
                 },
-                new Client()
+                new Client
                 {
                     ClientName = "Bookstore Client",
                     ClientId = "bookstore",
                     ClientSecrets = {new Secret("ce766e16-df99-411d-8d31-0f5bbc6b8eba".Sha256())},
                     AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
-                    RedirectUris = {"https://localhost:5000/signin-oidc"},
-                    PostLogoutRedirectUris = {"https://localhost:5000/signin-oidc"},
-                    AllowedScopes = {"openid", "profile",
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris = { "https://localhost:5051/" },
+                    PostLogoutRedirectUris = { "https://localhost:5051/" },
+                    AllowedCorsOrigins = { "https://localhost:5051" },
+                    AllowedScopes = {
+                        "openid",
+                        "profile",
                         "bookstoregateway.fullaccess",
-                        "shoppingbasket.fullaccess",
-                        "bookcatalog.fullaccess",
-                        "bookcatalog.write",
-                        "bookcatalog.read",
+                        "shoppingbasket.fullaccess"
                     }
                 }
             };
