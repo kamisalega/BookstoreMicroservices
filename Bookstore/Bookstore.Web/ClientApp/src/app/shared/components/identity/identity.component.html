@@ -1,1 +1,14 @@
-<p>identity works!</p>
+<div class="bs-identity"
+     *ngIf="!authenticated">
+  <section class="bs-identity-section">
+    <div class="bs-identity-item" (click)="login()">
+      <div class="bs-identity-name bs-identity-name--upper">Login</div>
+    </div>
+  </section>
+  <section class="bs-identity-section"
+           *ngIf="authenticated">
+
+    <div class="bs-identity-name">{{userName}}</div>
+    <img class="bs-identity-image" src="assets/images/arrow-down.png">
+  </section>
+</div>

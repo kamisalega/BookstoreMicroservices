@@ -12,7 +12,7 @@ export class ConfigurationService {
   settingsLoaded$ = this.settingsLoadedSource.asObservable();
   isReady: boolean = false;
 
-  constructor(private http: HttpClient, private storageService: StorageService) {
+  constructor(private http: HttpClient, private _storageService: StorageService) {
   }
 
   load() {
@@ -22,7 +22,11 @@ export class ConfigurationService {
       console.log('server settings loaded');
       this.serverSettings = response as IConfiguration;
       console.log(this.serverSettings);
-      this.storageService.store('purchaseUrl', this.serverSettings.purchaseUrl);
+      this._storageService.store('bookCatalogUrl', this.serverSettings.bookCatalogUrl);
+       this._storageService.store('shoppingBasketUrl', this.serverSettings.shoppingBasketUrl);
+      this._storageService.store('orderUrl', this.serverSettings.orderUrl);
+      this._storageService.store('identityUrl', this.serverSettings.identityUrl);
+      this._storageService.store('activateCampaignDetailFunction', this.serverSettings.activateCampaignDetailFunction);
       this.isReady = true;
       this.settingsLoadedSource.next();
     });

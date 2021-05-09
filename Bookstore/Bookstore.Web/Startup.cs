@@ -1,4 +1,6 @@
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,15 +13,19 @@ namespace Bookstore.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _config;
+        private readonly IHostEnvironment _environment;
+
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
-            Configuration = configuration;
+            _config = configuration;
+            _environment = environment;
         }
 
         public Startup()
         {
-            var localPath = new Uri(Configuration["PurchaseUrl"])?.LocalPath ?? "/";
-            Configuration["BaseUrl"] = localPath;
+            var localPath = new Uri(Configuration["BookGatewayUrl"])?.LocalPath ?? "/";
+            _config["BaseUrl"] = localPath;
         }
 
         public IConfiguration Configuration { get; }
@@ -27,13 +33,18 @@ namespace Bookstore.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration);
+            var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+            services.Configure<AppSettings>(_config);
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
             services.AddControllers()
                 .AddJsonOptions(options =>

@@ -17,6 +17,9 @@ import {HeaderComponent} from './components/header/header.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {PagerComponent} from './components/pager/pager.component';
 import {IdentityComponent} from './components/identity/identity.component';
+import {SignalrService} from "./services/signalr.service";
+import {SecurityService} from "./services/security.service";
+import {UppercasePipe} from "./pipes/uppercase.pipe";
 
 
 @NgModule({
@@ -24,7 +27,8 @@ import {IdentityComponent} from './components/identity/identity.component';
     HeaderComponent,
     PageNotFoundComponent,
     PagerComponent,
-    IdentityComponent
+    IdentityComponent,
+    UppercasePipe
   ],
   imports: [
     CommonModule,
@@ -32,6 +36,7 @@ import {IdentityComponent} from './components/identity/identity.component';
     ReactiveFormsModule,
     RouterModule,
     NgbModule,
+    // No need to export as these modules don't expose any components/directive etc'
     HttpClientModule,
     HttpClientJsonpModule
   ],
@@ -41,8 +46,12 @@ import {IdentityComponent} from './components/identity/identity.component';
     ReactiveFormsModule,
     RouterModule,
     NgbModule,
+    // Providers, Components, directive, pipes
     IdentityComponent,
-    PagerComponent
+    PagerComponent,
+    HeaderComponent,
+    PageNotFoundComponent,
+    UppercasePipe
   ]
 })
 export class SharedModule {
@@ -50,10 +59,12 @@ export class SharedModule {
     return {
       ngModule: SharedModule,
       providers: [
+        DataService,
+        BasketWrapperService,
+        SecurityService,
         ConfigurationService,
         StorageService,
-        DataService,
-        BasketWrapperService
+        SignalrService
       ]
     }
   }

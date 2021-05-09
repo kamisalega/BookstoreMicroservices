@@ -1,0 +1,29 @@
+@import '../../../variables';
+
+.bs-identity {
+  line-height: 2.1rem;
+  position: relative;
+  text-align: right;
+
+  &-section {
+    display: inline-block;
+    width: 100%;
+  }
+
+  &-name {
+    display: inline-block;
+    margin-right: 10px;
+
+    &--upper {
+      text-transform: uppercase;
+    }
+
+    @media screen and (max-width: $media-screen-s) {
+      font-size: $font-size-s;
+    }
+  }
+
+  &-image {
+    display: inline-block;
+  }
+}

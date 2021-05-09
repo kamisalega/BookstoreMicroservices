@@ -1,5 +1,7 @@
 export interface IConfiguration {
-  purchaseUrl: string,
+  bookCatalogUrl: string,
+  shoppingBasketUrl: string,
+  orderUrl: string,
   identityUrl: string,
   activateCampaignDetailFunction: boolean
 }

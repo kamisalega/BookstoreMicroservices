@@ -3,6 +3,7 @@ import {ToastrService} from "ngx-toastr";
 import {Title} from "@angular/platform-browser";
 import {Subscription} from "rxjs";
 import {ConfigurationService} from "./shared/services/configuration.service";
+import {SecurityService} from "./shared/services/security.service";
 
 @Component({
   selector: 'bs-app',
@@ -15,19 +16,22 @@ export class AppComponent implements OnInit {
 
   constructor(
     private titleService: Title,
+    private securityService: SecurityService,
     private toastr: ToastrService,
     vcr: ViewContainerRef,
     private configurationService: ConfigurationService,
   ) {
     // TODO: Set Taster Root (Overlay) container
     //this.toastr.setRootViewContainerRef(vcr);
+    this.Authenticated = this.securityService.IsAuthorized;
   }
 
   ngOnInit(): void {
+    this.subscription = this.securityService.authenticationChallenge$.subscribe(res => this.Authenticated = res);
     this.configurationService.load();
   }
 
   public setTitle(newTitle: string) {
-    this.titleService.setTitle('eShopOnContainers');
+    this.titleService.setTitle('Bookstore');
   }
 }

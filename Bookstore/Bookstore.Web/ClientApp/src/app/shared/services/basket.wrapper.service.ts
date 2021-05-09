@@ -3,13 +3,14 @@ import {Subject} from "rxjs";
 import {Guid} from "../../../../guid";
 import {ICatalogItem} from "../models/catalogItem.model";
 import {IBasketItem} from "../models/basketItem.model";
+import {SecurityService} from "./security.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketWrapperService {
 
-  constructor() {
+  constructor(private identityService: SecurityService) {
   }
 
   // observable that is fired when a product is added to the cart
@@ -20,7 +21,7 @@ export class BasketWrapperService {
   orderCreated$ = this.orderCreatedSource.asObservable();
 
   addItemToBasket(item: ICatalogItem) {
-    // if (this.identityService.IsAuthorized) {
+    if (this.identityService.IsAuthorized) {
     let basket: IBasketItem = {
       pictureUrl: item.imageUrl,
       productId: item.id,
@@ -30,11 +31,10 @@ export class BasketWrapperService {
       id: Guid.newGuid(),
       oldUnitPrice: 0
     };
-    //
-    //   this.addItemToBasketSource.next(basket);
-    // } else {
-    //   // this.identityService.Authorize();
-    // }
+      this.addItemToBasketSource.next(basket);
+    } else {
+      this.identityService.Authorize();
+    }
   }
 
   orderCreated() {

@@ -1,17 +1,19 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
+import {SecurityService} from "./security.service";
+import {Guid} from "../../../../guid";
 
 @Injectable()
 export class DataService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private securityService: SecurityService) {
   }
 
   get(url: string, params?: any): Observable<Response> {
     let options = {};
-    //this.setHeaders(options);
+    this.setHeaders(options);
 
     return this.http.get(url, options)
       .pipe(
@@ -21,6 +23,43 @@ export class DataService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  postWithId(url: string, data: any, params?: any): Observable<Response> {
+    return this.doPost(url, data, true, params);
+  }
+
+  post(url: string, data: any, params?: any): Observable<Response> {
+    return this.doPost(url, data, false, params);
+  }
+
+  putWithId(url: string, data: any, params?: any): Observable<Response> {
+    return this.doPut(url, data, true, params);
+  }
+
+  private doPost(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
+    let options = {};
+    this.setHeaders(options, needId);
+
+    return this.http.post(url, data, options)
+      .pipe(
+        tap((res: Response) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  delete(url: string, params?: any) {
+    let options = {};
+    this.setHeaders(options);
+
+    console.log('data.service deleting');
+
+    this.http.delete(url, options)
+      .subscribe((res) => {
+        console.log('deleted');
+      });
   }
 
   private handleError(error: any) {
@@ -38,5 +77,29 @@ export class DataService {
 
     // return an observable with a user-facing error message
     return throwError(error || 'server error');
+  }
+
+  private doPut(url: string, data: any, needId: boolean, params?: any): Observable<Response> {
+    let options = {};
+    this.setHeaders(options, needId);
+
+    return this.http.put(url, data, options)
+      .pipe(
+        tap((res: Response) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  private setHeaders(options: any, needId?: boolean) {
+    if (needId && this.securityService) {
+      options["headers"] = new HttpHeaders()
+        .append('authorization', 'Bearer ' + this.securityService.GetToken())
+        .append('x-requestid', Guid.newGuid());
+    } else if (this.securityService) {
+      options["headers"] = new HttpHeaders()
+        .append('authorization', 'Bearer ' + this.securityService.GetToken());
+    }
   }
 }
