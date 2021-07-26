@@ -48,17 +48,28 @@ namespace Bookstore.Services.Identity
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("CorsPolicy", corsBuilder =>
+            //     {
+            //         corsBuilder.AllowAnyHeader()
+            //             .AllowAnyMethod()
+            //             .SetIsOriginAllowed(origin => origin == "http://localhost:5000")
+            //             .AllowCredentials();
+            //     });
+            // });
 
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to https://localhost:5001/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
-                });
+            // services.AddAuthentication()
+            //     .AddGoogle(options =>
+            //     {
+            //         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            //
+            //         // register your IdentityServer with Google at https://console.developers.google.com
+            //         // enable the Google+ API
+            //         // set the redirect URI to https://localhost:5001/signin-google
+            //         options.ClientId = "copy client ID from Google here";
+            //         options.ClientSecret = "copy client secret from Google here";
+            //     });
         }
 
         public void Configure(IApplicationBuilder app)

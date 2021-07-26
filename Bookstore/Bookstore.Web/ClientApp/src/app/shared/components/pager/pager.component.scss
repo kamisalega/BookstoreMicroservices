@@ -1,0 +1,27 @@
+@import "src/app/styles/variables";
+
+.bs-pager {
+  &-wrapper {
+    padding-top: 1rem;
+    text-align: center;
+  }
+
+  &-item {
+    font-size: $font-size-s;
+    margin: 0 5vw;
+
+    &.is-disabled {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &--navigable {
+      cursor: pointer;
+      display: inline-block;
+
+      &:hover {
+        color: $color-secondary;
+      }
+    }
+  }
+}

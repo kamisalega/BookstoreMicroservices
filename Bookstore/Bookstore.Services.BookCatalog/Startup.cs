@@ -20,7 +20,7 @@ namespace Bookstore.Services.BookCatalog
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        // readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,41 +38,18 @@ namespace Bookstore.Services.BookCatalog
             services.AddControllers(setupActions =>
                 {
                     setupActions.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
-                    setupActions.ReturnHttpNotAcceptable = true;
-                })
-                .AddXmlDataContractSerializerFormatters()
-                .ConfigureApiBehaviorOptions(setupAction =>
-                    {
-                        setupAction.InvalidModelStateResponseFactory = context =>
-                        {
-                            var problemDetails = new ValidationProblemDetails(context.ModelState)
-                            {
-                                Type = "https://library.com/modelvalidationproblem",
-                                Title = "One more validation errors occurred.",
-                                Status = StatusCodes.Status422UnprocessableEntity,
-                                Detail = "See the errors property for details.",
-                                Instance = context.HttpContext.Request.Path
-                            };
-
-                            problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
-
-                            return new UnprocessableEntityObjectResult(problemDetails)
-                            {
-                                ContentTypes = {"application/problem+json"}
-                            };
-                        };
-                    }
-                );
+                });
 
             services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:44339",
-                            "https://localhost:44390");
-                    });
-            });
+                {
+                    options.AddPolicy("CorsPolicy",
+                        builder => builder
+                            .SetIsOriginAllowed((host) => true)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials());
+                });
+
             services.AddDbContext<BookCatalogDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -116,7 +93,7 @@ namespace Bookstore.Services.BookCatalog
 
             app.UseAuthorization();
 
-            app.UseCors(MyAllowSpecificOrigins);
+             app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -1,25 +1,18 @@
-<section class="bs-catalog-hero">
-  <div class="container">
-    <!--    <img class="bs-catalog-title" src="../../assets/images/main_banner_text.png" />-->
-  </div>
-</section>
-
 <section class="bs-catalog-filters">
   <div class="container">
     <div class="alert alert-warning bs-catalog-alert" role="alert" [hidden]="!errorReceived">
       Błąd podczas zamawiania produktów z katalogu, spróbuj później
     </div>
-            <label class="bs-catalog-label" data-title="kategorie">
-              <select class="bs-catalog-filter" (change)="onCategoryFilterChanged($event, $event.target.value)">
-                <option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</option>
-              </select>
-            </label>
-<!--            <label class="bs-catalog-label" data-title="type">-->
-<!--              <select class="bs-catalog-filter" (change)="onTypeFilterChanged($event, $event.target.value)">-->
-<!--                <option *ngFor="let type of types" [value]="type.id">{{type.type}}</option>-->
-<!--              </select>-->
-<!--            </label>-->
-        <img class="bs-catalog-send" (click)="onFilterApplied($event)" src="/assets/images/arrow-right.svg"/>
+    <div class="bs-catalog-filters-wrapper d-flex align-items-end  mt-3">
+      <div class="bs-catalog-filter-wrapper">
+        <label class="bs-catalog-label" for="category">Kategoria</label>
+        <select class="bs-catalog-filter form-control" id="category"
+                (change)="onCategoryFilterChanged($event, $event.target.value)">
+          <option *ngFor="let category of categories" [value]="category.categoryId">{{category.name}}</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="onFilterApplied($event)">Zastosuj</button>
+    </div>
   </div>
 </section>
 
@@ -28,22 +21,26 @@
     <bs-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></bs-pager>
 
     <div class="bs-catalog-items row">
-      <div class="bs-catalog-item col-md-4" *ngFor="let item of catalog?.data">
-
-        <img class="bs-catalog-thumbnail" src="{{item.imageUrl}}"/>
-        <button [ngClass]="{'bs-catalog-button': true, 'is-disabled': !authenticated} " (click)="addToCart(item)">
-          [ DODAJ DO KOSZYKA ]
-        </button>
-
-        <div class="bs-catalog-name">
-          <span>{{item.title}}</span>
-        </div>
-        <div class="bs-catalog-price">
-          <span>{{item.price | number:'.2-2'}}</span>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+           *ngFor="let item of catalog?.data">
+        <div [ngClass]="{'bs-catalog-item': true, 'is-disabled': !authenticated }" (click)="addToCart(item)">
+          <div class="bs-catalog-thumbnail-wrapper">
+            <div class="bs-catalog-thumbnail-icon d-flex justify-content-center">
+              <img class="bs-catalog-thumbnail-icon-svg" src="assets/images/add.svg"/>
+            </div>
+            <img class="bs-catalog-thumbnail" src="{{item.imageUrl}}"/>
+          </div>
+          <div class="bs-catalog-details d-flex justify-content-between align-items-center">
+            <div class="bs-catalog-name ml-3">
+              <span>{{item.categoryName}}</span>
+            </div>
+            <div class="bs-catalog-price mr-3">
+              <span>{{item.price | number:'1.2-2'}}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
     <bs-pager [model]="paginationInfo" (changed)="onPageChanged($event)"></bs-pager>
   </div>
   <div *ngIf="catalog?.data.length == 0">

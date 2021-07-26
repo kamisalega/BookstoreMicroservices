@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, tap} from "rxjs/operators";
 import {Observable, throwError} from "rxjs";
+import {SecurityService} from "./security.service";
+import {Guid} from "../../../../guid";
 
 @Injectable()
 export class DataService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private securityService: SecurityService) {
   }
 
   get(url: string, params?: any): Observable<Response> {
     let options = {};
-    //this.setHeaders(options);
+    this.setHeaders(options);
 
     return this.http.get(url, options)
       .pipe(
@@ -38,5 +41,17 @@ export class DataService {
 
     // return an observable with a user-facing error message
     return throwError(error || 'server error');
+  }
+
+  private setHeaders(options: any, needId?: boolean) {
+    if (needId && this.securityService) {
+      options["headers"] = new HttpHeaders()
+        .append('authorization', 'Bearer ' + this.securityService.getToken())
+        .append('x-requestid', Guid.newGuid())
+    }
+    else if (this.securityService) {
+      options["headers"] = new HttpHeaders()
+        .append('authorization', 'Bearer ' + this.securityService.getToken());
+    }
   }
 }

@@ -31,22 +31,22 @@ export class BasketService {
   ) {
     this.basket.items = [];
 
-    if (this.authService.IsAuthorized) {
-      if (this.authService.UserData) {
-        this.basket.buyerId = this.authService.UserData.sub;
-        if (this.configurationService.isReady) {
-          this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
-          this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
-          this.loadData();
-        }
-        else {
-          this.configurationService.settingsLoaded$.subscribe(x => {
-            this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
-            this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
-            this.loadData();
-          });
-        }
-      }
-    }
+    // if (this.authService.IsAuthorized) {
+    //   if (this.authService.UserData) {
+    //     this.basket.buyerId = this.authService.UserData.sub;
+    //     if (this.configurationService.isReady) {
+    //       this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
+    //       this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
+    //       this.loadData();
+    //     }
+    //     else {
+    //       this.configurationService.settingsLoaded$.subscribe(x => {
+    //         this.basketUrl = this.configurationService.serverSettings.purchaseUrl;
+    //         this.purchaseUrl = this.configurationService.serverSettings.purchaseUrl;
+    //         this.loadData();
+    //       });
+    //     }
+    //   }
+    // }
   }
 }

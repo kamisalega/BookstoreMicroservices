@@ -1,1 +1,24 @@
-<p>pager works!</p>
+<div class="bs-pager">
+  <div class="container">
+    <article class="bs-pager-wrapper row">
+      <nav class="w-100">
+        <span class="bs-pager-item bs-pager-item--navigable" id="Previous"
+              [ngClass]="{'is-disabled': buttonStates?.previousDisabled}"
+              (click)="onPreviousCliked($event)"
+              aria-label="Previous">
+          Poprzednia
+        </span>
+
+        <span class="bs-pager-item">
+            Pokaż {{model?.items}} z {{model?.totalItems}} książek - Strona {{model?.actualPage + 1}} - {{model?.totalPages}}
+        </span>
+
+        <span class="bs-pager-item bs-pager-item--navigable"  id="Next" [ngClass]="{'is-disabled': buttonStates?.nextDisabled}"
+              (click)="onNextClicked($event)"
+              aria-label="Next">
+          Następna
+        </span>
+      </nav>
+    </article>
+  </div>
+</div>

@@ -17,6 +17,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {PagerComponent} from './components/pager/pager.component';
 import {IdentityComponent} from './components/identity/identity.component';
+import {SignalrService} from "./services/signalr.service";
 
 
 @NgModule({
@@ -53,7 +54,8 @@ export class SharedModule {
         ConfigurationService,
         StorageService,
         DataService,
-        BasketWrapperService
+        BasketWrapperService,
+        SignalrService
       ]
     }
   }

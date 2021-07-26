@@ -1,1 +1,29 @@
-<p>identity works!</p>
+<div class="bs-identity">
+  <section class="bs-identity-section" *ngIf="!authenticated">
+    <div class="u-cursor-pointer pt-2 pb-2" (click)="login()">
+      <div class="bs-identity-name d-flex align-items-center">LOGIN
+        <img class="bs-identity-image ml-2" src="assets/images/user.svg" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="bs-identity-section u-cursor-pointer pt-2 pb-2"
+           *ngIf="authenticated">
+    <div class="bs-identity-name">{{userName}}</div>
+    <img class="bs-identity-image ml-2" src="assets/images/user.svg" alt="">
+  </section>
+
+  <section class="bs-identity-drop"
+           *ngIf="authenticated">
+
+    <div class="bs-identity-item">
+<!--         [routerLink]="['orders']">-->
+      <div class="bs-identity-name">Moje zamówienia</div>
+    </div>
+
+    <div class="bs-identity-item"
+         (click)="logoutClicked($event)">
+      <div class="bs-identity-name">Wyloguj</div>
+    </div>
+  </section>
+</div>
