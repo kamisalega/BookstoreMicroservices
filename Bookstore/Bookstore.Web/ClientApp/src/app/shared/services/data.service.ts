@@ -54,4 +54,22 @@ export class DataService {
         .append('authorization', 'Bearer ' + this.securityService.getToken());
     }
   }
+
+  post(url: string, data: any, params?: any) : Observable<Response> {
+    return this.doPost(url, data, false, params)
+  }
+
+  private doPost(url: string, data: any, needId: boolean, params?: any) : Observable<Response> {
+    let options = {};
+
+    this.setHeaders(options, needId);
+
+    return this.http.post(url, data, options)
+      .pipe(
+        tap((res: Response) => {
+          return res;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

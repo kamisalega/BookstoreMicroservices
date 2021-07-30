@@ -24,6 +24,7 @@ export class ConfigurationService {
       console.log(this.serverSettings);
       this.storageService.store('purchaseUrl', this.serverSettings.purchaseUrl);
       this.storageService.store('identityUrl', this.serverSettings.identityUrl);
+      this.storageService.store('basketUrl', this.serverSettings.basketUrl);
       this.isReady = true;
       this.settingsLoadedSource.next();
     });

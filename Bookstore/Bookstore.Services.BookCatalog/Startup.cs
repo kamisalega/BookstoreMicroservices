@@ -32,12 +32,12 @@ namespace Bookstore.Services.BookCatalog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
+            // var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
+            //     .RequireAuthenticatedUser()
+            //     .Build();
             services.AddControllers(setupActions =>
                 {
-                    setupActions.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
+                    // setupActions.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
                 });
 
             services.AddCors(options =>
@@ -64,12 +64,12 @@ namespace Bookstore.Services.BookCatalog
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Book Catalog API", Version = "v1"});
             });
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://localhost:5010";
-                    options.Audience = "bookstore";
-                });
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options =>
+            //     {
+            //         options.Authority = "https://localhost:5010";
+            //         options.Audience = "bookstore";
+            //     });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,7 +89,7 @@ namespace Bookstore.Services.BookCatalog
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            // app.UseAuthentication();
 
             app.UseAuthorization();
 
