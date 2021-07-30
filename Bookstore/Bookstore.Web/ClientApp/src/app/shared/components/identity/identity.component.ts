@@ -54,6 +54,6 @@ export class IdentityComponent implements OnInit {
 
   logout() {
      // this.signalrService.stop();
-    this.service.Logoff();
+    this.service.logoff();
   }
 }

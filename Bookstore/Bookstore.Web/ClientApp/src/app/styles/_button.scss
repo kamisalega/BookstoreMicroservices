@@ -8,15 +8,25 @@
 
   &:focus {
     box-shadow: none;
-    opacity: .7;
+    //opacity: .7;
+    border-color: $color-primary !important;
+    color: $color-primary !important;
+    background-color: transparent !important;
+  }
+
+  &:active {
+    box-shadow: none;
+
+    border-color: $color-primary !important;
+    color: $color-primary !important;
+    background-color: transparent !important;
   }
 
   &:hover {
     color: $color-brightest !important;
-  }
+    background-color: $color-primary !important;
+    border-color: $color-primary !important;
 
-  &:active:focus {
-    box-shadow: none !important;
   }
 
   &:visited {
@@ -35,6 +45,7 @@
     border-color: $color-primary;
     color: $color-primary;
   }
+
 
   &-secondary {
     border-color: $color-secondary;

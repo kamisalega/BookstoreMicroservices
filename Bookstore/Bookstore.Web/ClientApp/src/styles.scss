@@ -3,9 +3,11 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~ngx-toastr/toastr-bs4-alert.scss";
 
-@import './app/styles/utilities';
 @import './app/styles/variables';
+@import './app/styles/utilities';
+
 @import './app/styles/button';
+@import './app/styles/bootstrap_overrides';
 
 @font-face {
   font-family: 'Oswald';

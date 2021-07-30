@@ -222,4 +222,21 @@ export class SecurityService {
     }
 
   }
+
+  logoff() {
+    let authorizationUrl = this.authorityUrl + '/connect/endsession';
+    let id_token_hint = this.storage.retrieve('authorizationDataIdToken');
+    let post_logout_redirect_uri = location.origin + '/';
+
+    let url =
+      authorizationUrl + '?' +
+      'id_token_hint=' + encodeURI(id_token_hint) + '&' +
+      'post_logout_redirect_uri=' + encodeURI(post_logout_redirect_uri);
+
+    this.resetAuthorizationData();
+
+    this.authenticationSource.next(false);
+    window.location.href = url;
+
+  }
 }
