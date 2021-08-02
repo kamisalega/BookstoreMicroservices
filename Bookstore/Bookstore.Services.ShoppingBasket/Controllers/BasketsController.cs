@@ -32,10 +32,11 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
             this.discountService = discountService;
         }
 
-        [HttpGet("{basketId}", Name = "GetBasket")]
-        public async Task<ActionResult<Basket>> Get(Guid basketId)
+        [HttpGet("{userId}", Name = "GetBasket")]
+        public async Task<ActionResult<Basket>> Get(Guid userId)
         {
-            var basket = await basketRepository.GetBasketById(basketId);
+            var basket = await basketRepository.GetBasketById(userId);
+            
             if (basket == null)
             {
                 return NotFound();
@@ -47,8 +48,13 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Basket>> Post(BasketForCreation basketForCreation)
+        public async Task<ActionResult<Basket>> UpdateAllBasketAsync(BasketForCreation basketForCreation)
         {
+            // if (basketForCreation.)
+            // {
+            //     
+            // }
+            
             var basketEntity = mapper.Map<Entities.Basket>(basketForCreation);
 
             basketRepository.AddBasket(basketEntity);
@@ -56,10 +62,11 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
 
             var basketToReturn = mapper.Map<Basket>(basketEntity);
 
-            return CreatedAtRoute(
-                "GetBasket",
-                new { basketId = basketEntity.BasketId },
+            return Created(
+                $"/api/baskets/{basketEntity.BasketId}",
                 basketToReturn);
+
+            // return Ok(basketToReturn);
         }
 
         [HttpPut("{basketId}/coupon")]

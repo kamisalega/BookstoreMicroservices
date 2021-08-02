@@ -16,10 +16,10 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
             this.shoppingBasketDbContext = shoppingBasketDbContext;
         }
 
-        public async Task<Basket> GetBasketById(Guid basketId)
+        public async Task<Basket> GetBasketById(Guid userId)
         {
             return await shoppingBasketDbContext.Baskets.Include(sb => sb.BasketLines)
-                .Where(b => b.BasketId == basketId).FirstOrDefaultAsync();
+                .Where(b => b.UserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> BasketExists(Guid basketId)
