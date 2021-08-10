@@ -1,6 +1,7 @@
 using System;
 using Bookstore.Services.ShoppingBasket.Entities;
 using Microsoft.EntityFrameworkCore;
+using Bookstore.Services.ShoppingBasket.Entities;
 
 namespace Bookstore.Services.ShoppingBasket.DbContexts
 {
@@ -14,6 +15,7 @@ namespace Bookstore.Services.ShoppingBasket.DbContexts
         public DbSet<Basket> Baskets { get; set; }
         public DbSet<BasketLine> BasketLines { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Author> Authors { get; set; }
         public DbSet<BasketChangeBook> BasketChangeBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -24,7 +24,10 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         private readonly IMessageBus messageBus;
         private readonly IDiscountService discountService;
 
-        public BasketsController(IBasketRepository basketRepository, IMapper mapper, IMessageBus messageBus, IDiscountService discountService)
+        public BasketsController(IBasketRepository basketRepository, 
+            IMapper mapper, 
+            IMessageBus messageBus, 
+            IDiscountService discountService)
         {
             this.basketRepository = basketRepository;
             this.mapper = mapper;
@@ -32,10 +35,10 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
             this.discountService = discountService;
         }
 
-        [HttpGet("{userId}", Name = "GetBasket")]
-        public async Task<ActionResult<Basket>> Get(Guid userId)
+        [HttpGet("{basketId}", Name = "GetBasket")]
+        public async Task<ActionResult<Basket>> Get(Guid basketId)
         {
-            var basket = await basketRepository.GetBasketById(userId);
+            var basket = await basketRepository.GetBasketById(basketId);
             
             if (basket == null)
             {
@@ -43,22 +46,36 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
             }
 
             var result = mapper.Map<Basket>(basket);
-            result.NumberOfItems = basket.BasketLines.Sum(bl => bl.TicketAmount);
+            result.BookAmount = basket.BasketLines.Sum(bl => bl.BookAmount);
+            return Ok(result);
+        }
+        
+        [HttpGet("{userId}/userbasket")]
+        public async Task<ActionResult<Basket>> GetBasketByUserId(Guid userId)
+        {
+            var basket = await basketRepository.GetBasketByUserId(userId);
+            
+            if (basket == null)
+            {
+                return NotFound();
+            }
+
+            var result = mapper.Map<Basket>(basket);
+            result.BookAmount = basket.BasketLines.Sum(bl => bl.BookAmount);
             return Ok(result);
         }
 
         [HttpPost]
         public async Task<ActionResult<Basket>> UpdateAllBasketAsync(BasketForCreation basketForCreation)
         {
-            // if (basketForCreation.)
-            // {
-            //     
-            // }
-            
-            var basketEntity = mapper.Map<Entities.Basket>(basketForCreation);
+            var basketEntity = await basketRepository.GetBasketByUserId(basketForCreation.UserId);
 
-            basketRepository.AddBasket(basketEntity);
-            await basketRepository.SaveChanges();
+            if (basketEntity == null)
+            {
+                basketEntity = mapper.Map<Entities.Basket>(basketForCreation);
+                basketRepository.AddBasket(basketEntity);
+                await basketRepository.SaveChanges();
+            }
 
             var basketToReturn = mapper.Map<Basket>(basketEntity);
 
@@ -95,8 +112,6 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         {
             try
             {
-
-
                 //based on basket checkout, fetch the basket lines from repo
                 var basket = await basketRepository.GetBasketById(basketCheckout.BasketId);
 
@@ -115,10 +130,10 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
                     {
                         BasketLineId = b.BasketLineId,
                         Price = b.Price,
-                        TicketAmount = b.TicketAmount
+                        BookAmount = b.BookAmount
                     };
 
-                    total += b.Price * b.TicketAmount;
+                    total += b.Price * b.BookAmount;
 
                     basketCheckoutMessage.BasketLines.Add(basketLineMessage);
                 }

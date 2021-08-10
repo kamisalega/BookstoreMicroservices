@@ -1,9 +1,10 @@
+import {IBook} from "./book.module";
+
 export interface IBasketItem {
-  id: string;
-  productId: string;
-  productName: string;
-  unitPrice: number;
-  oldUnitPrice: number;
-  quantity: number;
-  pictureUrl: string;
+  basketLineId: string;
+  bookId: string;
+  basketId: string;
+  price: number;
+  bookAmount: number;
+  book: IBook;
 }

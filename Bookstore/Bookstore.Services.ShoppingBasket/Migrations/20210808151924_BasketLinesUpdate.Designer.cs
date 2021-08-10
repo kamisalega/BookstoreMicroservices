@@ -4,43 +4,22 @@ using Bookstore.Services.ShoppingBasket.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookstore.Services.ShoppingBasket.Migrations
 {
     [DbContext(typeof(ShoppingBasketDbContext))]
-    partial class ShoppingBasketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210808151924_BasketLinesUpdate")]
+    partial class BasketLinesUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Bookstore.Services.ShoppingBasket.Entities.Author", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("DateOfBirth")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("DateOfDeath")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Authors");
-                });
 
             modelBuilder.Entity("Bookstore.Services.ShoppingBasket.Entities.Basket", b =>
                 {
@@ -115,24 +94,16 @@ namespace Bookstore.Services.ShoppingBasket.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AuthorId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BookId");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("Books");
 
@@ -140,78 +111,67 @@ namespace Bookstore.Services.ShoppingBasket.Migrations
                         new
                         {
                             BookId = new Guid("c7ba6add-09c4-45f8-8dd0-eaca221e5d93"),
-                            Date = new DateTime(2021, 9, 10, 18, 48, 23, 123, DateTimeKind.Local).AddTicks(6020),
-                            Price = 0.0,
+                            Date = new DateTime(2021, 9, 8, 17, 19, 24, 75, DateTimeKind.Local).AddTicks(2556),
                             Title = "The Shining"
                         },
                         new
                         {
                             BookId = new Guid("a3749477-f823-4124-aa4a-fc9ad5e79cd6"),
-                            Date = new DateTime(2021, 10, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9071),
-                            Price = 0.0,
+                            Date = new DateTime(2021, 10, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4252),
                             Title = "Misery"
                         },
                         new
                         {
                             BookId = new Guid("70a1f9b9-0a37-4c1a-99b1-c7709fc64167"),
-                            Date = new DateTime(2021, 11, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9104),
-                            Price = 0.0,
+                            Date = new DateTime(2021, 11, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4279),
                             Title = "It"
                         },
                         new
                         {
                             BookId = new Guid("60188a2b-2784-4fc4-8df8-8919ff838b0b"),
-                            Date = new DateTime(2021, 12, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9110),
-                            Price = 0.0,
+                            Date = new DateTime(2021, 12, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4285),
                             Title = "The Stand"
                         },
                         new
                         {
                             BookId = new Guid("447eb762-95e9-4c31-95e1-b20053fbe215"),
-                            Date = new DateTime(2022, 1, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9115),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 1, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4289),
                             Title = "A Game of Thrones"
                         },
                         new
                         {
                             BookId = new Guid("bc4c35c3-3857-4250-9449-155fcf5109ec"),
-                            Date = new DateTime(2022, 2, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9118),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 2, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4292),
                             Title = "The Winds of Winter"
                         },
                         new
                         {
                             BookId = new Guid("09af5a52-9421-44e8-a2bb-a6b9ccbc8239"),
-                            Date = new DateTime(2022, 3, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9122),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 3, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4296),
                             Title = "A Dance with Dragons"
                         },
                         new
                         {
                             BookId = new Guid("9edf91ee-ab77-4521-a402-5f188bc0c577"),
-                            Date = new DateTime(2022, 4, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9126),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 4, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4300),
                             Title = "American Gods"
                         },
                         new
                         {
                             BookId = new Guid("01457142-358f-495f-aafa-fb23de3d67e9"),
-                            Date = new DateTime(2022, 5, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9130),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 5, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4304),
                             Title = "Speechless"
                         },
                         new
                         {
                             BookId = new Guid("e57b605f-8b3c-4089-b672-6ce9e6d6c23f"),
-                            Date = new DateTime(2022, 6, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9134),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 6, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4308),
                             Title = "The Hitchhiker's Guide to the Galaxy"
                         },
                         new
                         {
                             BookId = new Guid("1325360c-8253-473a-a20f-55c269c20407"),
-                            Date = new DateTime(2022, 7, 10, 18, 48, 23, 124, DateTimeKind.Local).AddTicks(9138),
-                            Price = 0.0,
+                            Date = new DateTime(2022, 7, 8, 17, 19, 24, 76, DateTimeKind.Local).AddTicks(4311),
                             Title = "Easy Money"
                         });
                 });
@@ -233,15 +193,6 @@ namespace Bookstore.Services.ShoppingBasket.Migrations
                     b.Navigation("Basket");
 
                     b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("Bookstore.Services.ShoppingBasket.Entities.Book", b =>
-                {
-                    b.HasOne("Bookstore.Services.ShoppingBasket.Entities.Author", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
-                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Bookstore.Services.ShoppingBasket.Entities.Basket", b =>

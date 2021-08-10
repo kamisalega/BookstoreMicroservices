@@ -4,14 +4,16 @@ using Bookstore.Services.ShoppingBasket.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bookstore.Services.ShoppingBasket.Migrations
 {
     [DbContext(typeof(ShoppingBasketDbContext))]
-    partial class ShoppingBasketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210810164823_BookAuthorv2Update")]
+    partial class BookAuthorv2Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

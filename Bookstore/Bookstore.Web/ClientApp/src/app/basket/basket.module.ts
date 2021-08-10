@@ -17,7 +17,7 @@ import { BasketStatusComponent } from './basket-status/basket-status.component';
     ]
 })
 export class BasketModule {
-  static forRoot(): ModuleWithProviders{
+  static forRoot(): ModuleWithProviders<BasketModule>{
     return {
       ngModule: BasketModule,
       providers: [

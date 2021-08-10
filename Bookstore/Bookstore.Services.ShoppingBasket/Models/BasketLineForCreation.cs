@@ -11,6 +11,6 @@ namespace Bookstore.Services.ShoppingBasket.Models
         [Required]
         public int Price { get; set; }
         [Required]
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
     }
 }

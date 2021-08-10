@@ -41,9 +41,9 @@ namespace Bookstore.Services.Identity
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
-                    RedirectUris =           { "http://localhost:5000/" },
-                    PostLogoutRedirectUris = { "http://localhost:5000/" },
-                    AllowedCorsOrigins =     { "http://localhost:5000" },
+                    RedirectUris =           { "https://localhost:5000/" },
+                    PostLogoutRedirectUris = { "https://localhost:5000/" },
+                    AllowedCorsOrigins =     { "https://localhost:5000" },
                     AllowedScopes = {"openid", "profile","bookstore.fullaccess"}
                 }
             };

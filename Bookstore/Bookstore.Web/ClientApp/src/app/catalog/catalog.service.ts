@@ -21,6 +21,10 @@ export class CatalogService {
   }
 
   getCatalog(pageIndex: number, pageSize: number, category: string, type: number): Observable<ICatalog> {
+    if (this.catalogUrl === '') {
+      this.catalogUrl = this.catalogUrl = this.configurationService.serverSettings.purchaseUrl + '/api/books';
+    }
+
     let url = this.catalogUrl;
 
     if (type) {

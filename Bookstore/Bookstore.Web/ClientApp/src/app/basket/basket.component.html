@@ -1,1 +1,68 @@
-<p>basket works!</p>
+<div class="bs-basket">
+  <div class="container">
+    <h1 class="mb-4 mt-5">[ Twój Koszyk ]</h1>
+    <div *ngFor="let errorMessage of errorMessages">
+      <div class="bs-basket-items-margin-left1 row">
+        <div class="alert alert-warning" role="alert"><p>error</p>{{errorMessage}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-8 col-lg-9">
+        <div class="bs-basket-items row">
+          <div *ngFor="let item of basket?.basketLines" class="col-12 col-md-6 col-lg-4">
+            <article class="bs-basket-item">
+              <div class="bs-basket-thumbnail-wrapper">
+                <div class="bs-basket-delete" (click)="deleteItem('id')">
+                  <img class="bs-basket-delete-svg" src="assets/images/delete.svg">
+                </div>
+                <img class="bs-basket-thumbnail" src="{{item.book.imageUrl}}">
+              </div>
+              <div class="bs-basket-title">{{item.book.title}}</div>
+              <div
+                class="bs-basket-description divider d-flex align-items-center justify-content-around justify-content-between">
+                <div class="">{{item.price | number: '2.2'}} PLN</div>
+                <div class="bs-basket-buttons d-flex justify-content-center">
+                  <button
+                    [ngClass]="{'bs-basket-button': true, 'is-disabled': item.bookAmount === 1}"
+                    (click)="itemQuantityChanged(item, item.bookAmount-1)">
+
+                    <img class="bs-basket-button-svg" src="assets/images/minus.svg"/>
+                  </button>
+                  <div class="bs-basket-quantity">{{item.bookAmount}}</div>
+                  <button class="bs-basket-button"
+                          (click)="itemQuantityChanged(item, item.bookAmount+1)">
+                    <img class="bs-basket-button-svg"
+                         src="assets/images/plus.svg"/>
+                  </button>
+                </div>
+                <div class="bs-basket-price text-right">{{(item.price * item.bookAmount) | number:'.2-2'}} PLN</div>
+              </div>
+              <div class="" *ngIf="item.price > 0">
+                Zwróć uwagę, że cena tego artykułu zmieniła się w naszym Katalogu.
+                Stara cena w momencie dodania jej do koszyka była {{item.price}} PLN.
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="bs-basket-checkout p-4">
+          <h2 class="bs-basket-checkout-title">Twój koszyk</h2>
+          <div class="mb-3 u-text-sm">({{basket?.basketLines ? basket?.basketLines.length : 0}} książek)</div>
+          <div class="d-flex justify-content-between align-items-center font-weight-bolder">
+            <div>CAŁA</div>
+            <div>PLN{{totalPrice | number:'.2-2'}}</div>
+          </div>
+        </div>
+          <div class="divider u-background-brightest p-4">
+            <div>
+              <button class="btn btn-primary u-width-100 u-minwidth-unset" (click)="checkOut($event)">Zapłać</button>
+            </div>
+          </div>
+          <div class="p-4">
+            <a class="btn btn-secondary u-width-100 u-minwidth-unset" routerLink="/catalog">Kontynuuj zakupy</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

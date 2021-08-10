@@ -4,6 +4,7 @@ import {BasketWrapperService} from "../../shared/services/basket.wrapper.service
 import {SecurityService} from "../../shared/services/security.service";
 import {ConfigurationService} from "../../shared/services/configuration.service";
 import {Subscription} from "rxjs";
+import {StorageService} from "../../shared/services/storage.service";
 
 @Component({
   selector: 'bs-basket-status',
@@ -16,27 +17,34 @@ export class BasketStatusComponent implements OnInit {
   private authSubscription: Subscription;
 
   public badge: number = 0;
+  private storage: StorageService;
 
   constructor(private basketService: BasketService,
               private basketWrapperService: BasketWrapperService,
               private authService: SecurityService,
-              private configurationService: ConfigurationService) {
-
+              private configurationService: ConfigurationService,
+              private storageService: StorageService
+  ) {
+    this.storage = storageService;
   }
 
   ngOnInit() {
+    this.basketService
     this.basketItemAddedSubscription = this.basketWrapperService.addItemToBasket$.subscribe(item => {
-      this.basketService.addItemToBasket(item).subscribe(res => {
-        this.basketService.getBasket().subscribe(basket => {
-          if (basket != null)
-            this.badge = basket.items.length;
+      if (this.storage.retrieve('basketId')) {
+        item.basketId = this.storage.retrieve('basketId');
+        this.addItem(item);
+      } else {
+        this.basketService.setBasketId(item).subscribe(resBasket => {
+          item.basketId = resBasket.basketId;
+          this.addItem(item);
         });
-      });
+      }
     });
 
     this.basketUpdateSubscription = this.basketService.basketUpdate$.subscribe(res => {
       this.basketService.getBasket().subscribe(basket => {
-        this.badge = basket ? basket.items.length : 0;
+        this.badge = basket ? basket.bookAmount : 0;
       });
     });
 
@@ -44,7 +52,7 @@ export class BasketStatusComponent implements OnInit {
     this.authSubscription = this.authService.authenticationChallenge$.subscribe(res => {
       this.basketService.getBasket().subscribe(basket => {
         if (basket != null)
-          this.badge = basket.items.length;
+          this.badge = basket.bookAmount;
       });
     });
 
@@ -52,16 +60,32 @@ export class BasketStatusComponent implements OnInit {
     if (this.configurationService.isReady) {
       this.basketService.getBasket().subscribe(basket => {
         if (basket != null)
-          this.badge = basket.items.length;
+          this.badge = basket.bookAmount;
       });
     } else {
       this.configurationService.settingsLoaded$.subscribe(x => {
-        this.basketService.getBasket().subscribe(basket => {
-          if (basket != null)
-            this.badge = basket.items.length;
+        this.basketService.getBasketByUserId().subscribe(res => {
+          if (!this.storage.retrieve('basketId')) {
+            this.badge = 0;
+          } else {
+            this.basketService.getBasket().subscribe(basket => {
+              if (basket != null)
+                this.badge = basket.bookAmount;
+            });
+          }
         });
       });
     }
+  }
+
+  private addItem(item) {
+    this.basketService.addItemToBasket(item).subscribe(res => {
+      console.log(res);
+      this.basketService.getBasket().subscribe(basket => {
+        if (basket != null)
+          this.badge = basket.bookAmount;
+      });
+    });
   }
 
 }

@@ -4,11 +4,14 @@ import {Guid} from "../../../../guid";
 import {ICatalogItem} from "../models/catalogItem.model";
 import {IBasketItem} from "../models/basketItem.model";
 import {SecurityService} from "./security.service";
+import {IBasket} from "../models/basket.model";
+import {IBook} from "../models/book.module";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketWrapperService {
+  public basket: IBasket;
 
   constructor(private identityService: SecurityService) {
   }
@@ -23,19 +26,25 @@ export class BasketWrapperService {
   addItemToBasket(item: ICatalogItem) {
     if (this.identityService.IsAuthorized) {
 
+      let newBook: IBook = {
+        bookId: item.id,
+        title: item.title,
+        imageUrl: item.imageUrl,
+        date: item.date
+      };
+
       let basket: IBasketItem = {
-        pictureUrl: item.imageUrl,
-        productId: item.id,
-        productName: item.categoryName,
-        quantity: 1,
-        unitPrice: item.price,
-        id: Guid.newGuid(),
-        oldUnitPrice: 0
+        book: newBook,
+        bookId: item.id,
+        basketId: item.basketId,
+        bookAmount: 1,
+        price: item.price,
+        basketLineId: Guid.newGuid()
+        // oldUnitPrice: 0
       };
 
       this.addItemToBasketSource.next(basket);
-    } else
-    {
+    } else {
       this.identityService.authorize();
     }
   }
@@ -43,7 +52,6 @@ export class BasketWrapperService {
 
   orderCreated() {
     this.orderCreatedSource.next();
-
   }
 }
 

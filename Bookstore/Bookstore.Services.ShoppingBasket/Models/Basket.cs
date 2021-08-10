@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 
 namespace Bookstore.Services.ShoppingBasket.Models
 {
@@ -6,7 +7,8 @@ namespace Bookstore.Services.ShoppingBasket.Models
     {
         public Guid BasketId { get; set; }
         public Guid UserId { get; set; }
-        public int NumberOfItems { get; set; }
+        public Collection<BasketLine> BasketLines { get; set; }
+        public int BookAmount { get; set; }
         public Guid? CouponId { get; set; }
     }
 }
