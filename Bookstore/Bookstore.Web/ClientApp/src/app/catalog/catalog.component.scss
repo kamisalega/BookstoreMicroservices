@@ -110,6 +110,7 @@
     cursor: pointer;
     margin-bottom: 1.5rem;
     width: 100%;
+    padding-bottom: .5rem;
 
     &:hover {
       background-color: $color-brightest;
@@ -129,6 +130,12 @@
     }
   }
 
+  &-category {
+    &-name {
+      font-size: $font-size-m;
+    }
+  }
+
   &-thumbnail-wrapper {
     background-color: #dbdede;
     height: 0;
@@ -145,7 +152,7 @@
     opacity: 0;
     position: absolute;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: 3.5rem;
     z-index: 20;
     transition: all $animation-speed-default;
@@ -161,18 +168,25 @@
     left: 50%;
     position: absolute;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: auto;
     z-index: 10;
   }
 
   &-details {
-    height: 4rem;
+    margin-top: .5rem;
   }
 
   &-name {
     font-size: $font-size-m;
+    margin-bottom: .5rem;
     text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    border-bottom: 0.1rem solid $color-secondary-brightest;
   }
 
   &-price {

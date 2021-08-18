@@ -32,11 +32,12 @@ export class BasketComponent implements OnInit {
       );
   }
 
-  deleteItem(id: String) {
-    this.basket.basketLines = this.basket.basketLines.filter(item => item.basketLineId !== id);
+  deleteLine(basketLine: IBasketItem) {
+    this.basket.basketLines = this.basket.basketLines.filter(item => item.basketLineId !== basketLine.basketLineId);
+
     this.calculateTotalPrice();
 
-    this.basketService.setBasketLines(this.basket).subscribe(x =>
+    this.basketService.deleteBasket(basketLine).subscribe(x =>
       {
         this.basketService.updateQuantity();
         console.log('basket updated: ' + x)
@@ -47,7 +48,11 @@ export class BasketComponent implements OnInit {
   itemQuantityChanged(item: IBasketItem, quantity: number) {
     item.bookAmount = quantity > 0 ? quantity : 1;
     this.calculateTotalPrice();
-    this.basketService.setBasketLines(this.basket).subscribe(x => console.log('basket updated: ' + x));
+    this.basketService.updateBasket(item).subscribe(x => {
+      this.basketService.updateQuantity();
+      console.log('basket updated: ' + x)
+
+    });
   }
 
   update(event: any): Observable<boolean> {
@@ -76,7 +81,7 @@ export class BasketComponent implements OnInit {
   private calculateTotalPrice() {
     this.totalPrice = 0;
     this.basket.basketLines.forEach( item => {
-      this.totalPrice += (item.price * item.bookAmount);
+      this.totalPrice += (item.book.price * item.bookAmount);
     });
   }
 

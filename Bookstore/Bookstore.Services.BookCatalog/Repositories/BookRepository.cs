@@ -21,6 +21,7 @@ namespace Bookstore.Services.BookCatalog.Repositories
         {
             return await _bookCatalogDbContext.Books
                 .Include(x => x.Category)
+                .Include(x => x.Author)
                 .Where(x => (x.CategoryId == categoryId || categoryId == Guid.Empty))
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
@@ -31,7 +32,8 @@ namespace Bookstore.Services.BookCatalog.Repositories
         public async Task<Book> GetBookById(Guid bookId)
         {
             return await _bookCatalogDbContext.Books
-                .Include(x => x.Category)
+                .Include(catalog => catalog.Category)
+                .Include(catalog => catalog.Author)
                 .Where(x => x.Id == bookId).FirstOrDefaultAsync();
         }
 

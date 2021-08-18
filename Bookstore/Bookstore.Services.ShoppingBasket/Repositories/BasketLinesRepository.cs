@@ -36,6 +36,7 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
             if (existingLine == null)
             {
                 basketLine.BasketId = basketId;
+                
                 basketLine.Book =  shoppingBasketDbContext.Books
                     .FirstOrDefault(book => book.BookId == basketLine.BookId);
                 shoppingBasketDbContext.BasketLines.Add(basketLine);
@@ -48,7 +49,7 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
 
         public void UpdateBasketLine(BasketLine basketLine)
         {
-            // empty on purpose
+            shoppingBasketDbContext.BasketLines.Update(basketLine);
         }
 
         public void RemoveBasketLine(BasketLine basketLine)

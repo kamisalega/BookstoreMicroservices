@@ -60,7 +60,7 @@ export class BasketService {
     }
 
     this.basketWrapperService.orderCreated$.subscribe(x => {
-      this.dropBasket();
+      this.deleteBasket(x)
     });
   }
 
@@ -100,19 +100,26 @@ export class BasketService {
     }));
   }
 
+  public updateBasket(basketLineForUpdate): Observable<boolean> {
+    let url = this.basketUrl + '/api/baskets/' + basketLineForUpdate.basketId + '/basketlines/' + basketLineForUpdate.basketLineId;
+    return this.service.put(url, basketLineForUpdate).pipe<boolean>(tap((response: any) => {
+      return true;
+    }));
+  }
+
+  public deleteBasket(basketLineForDelete): Observable<boolean> {
+    let url = this.basketUrl + '/api/baskets/' + basketLineForDelete.basketId + '/basketlines/' + basketLineForDelete.basketLineId;
+    return this.service.delete(url).pipe<boolean>(tap((response: any) => {
+      return true;
+    }));
+  }
+
   private loadData() {
     this.getBasket().subscribe(basket => {
       if (basket != null) {
         this.basket.basketLines = basket.basketLines;
       }
     })
-  }
-
-  private dropBasket() {
-    this.basket.basketLines = [];
-    this.setBasketLines(this.basket).subscribe(res => {
-      this.basketUpdateSource.next();
-    });
   }
 
   setBasketId(basketItem): Observable<IBasket> {

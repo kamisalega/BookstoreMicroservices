@@ -7,9 +7,8 @@ namespace Bookstore.Services.ShoppingBasket.Entities
     {
         [Required]
         public Guid Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTimeOffset DateOfBirth { get; set; }
-        public DateTimeOffset? DateOfDeath { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Genre { get; set; }
     }
 }

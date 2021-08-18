@@ -1,4 +1,4 @@
-import {IBook} from "./book.module";
+import {IBook} from "./book.model";
 
 export interface IBasketItem {
   basketLineId: string;
@@ -7,4 +7,5 @@ export interface IBasketItem {
   price: number;
   bookAmount: number;
   book: IBook;
+
 }

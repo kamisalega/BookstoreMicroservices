@@ -42,9 +42,17 @@
     width: auto;
   }
 
+  &-author {
+    font-size: $font-size-m;
+    text-align: center;
+    padding: 0 1rem;
+    margin: 0 2rem;
+    border-bottom: 0.1rem solid $color-secondary-brightest;
+  }
+
   &-title {
     font-size: $font-size-m;
-    line-height: 3rem;
+    //line-height: 3rem;
     text-align: center;
     padding: 0 1rem;
     text-transform: uppercase;
@@ -110,12 +118,14 @@
 
   &-checkout {
     background-color: $color-brightest;
+
+    &-title {
+      font-weight: $font-weight-semibold;
+      text-align: center;
+    }
+
+    &-total {
+      text-transform: uppercase;
+    }
   }
-
-  &-checkout-title {
-    font-weight: $font-weight-semibold;
-    text-align: center;
-  }
-
-
 }

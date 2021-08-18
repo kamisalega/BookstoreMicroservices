@@ -5,7 +5,8 @@ import {ICatalogItem} from "../models/catalogItem.model";
 import {IBasketItem} from "../models/basketItem.model";
 import {SecurityService} from "./security.service";
 import {IBasket} from "../models/basket.model";
-import {IBook} from "../models/book.module";
+import {IBook} from "../models/book.model";
+import {IAuthor} from "../models/author.model";
 
 @Injectable({
   providedIn: 'root'
@@ -26,11 +27,20 @@ export class BasketWrapperService {
   addItemToBasket(item: ICatalogItem) {
     if (this.identityService.IsAuthorized) {
 
+      let newAuthor: IAuthor = {
+        id: item.authorId,
+        name: '',
+        age: 0
+
+      }
+
       let newBook: IBook = {
         bookId: item.id,
         title: item.title,
         imageUrl: item.imageUrl,
-        date: item.date
+        date: item.date,
+        author: newAuthor,
+        price: item.price
       };
 
       let basket: IBasketItem = {

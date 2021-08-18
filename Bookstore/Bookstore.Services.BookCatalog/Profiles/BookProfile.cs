@@ -10,6 +10,7 @@ namespace Bookstore.Services.BookCatalog.Profiles
                 .ForMember(dest => dest.CategoryName,
                     opts =>
                         opts.MapFrom(src => src.Category.Name));
+
         }
     }
 }
