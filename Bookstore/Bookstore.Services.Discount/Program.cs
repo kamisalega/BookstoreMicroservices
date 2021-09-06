@@ -13,6 +13,7 @@ namespace Bookstore.Services.Discount
     {
         public static void Main(string[] args)
         {
+
             CreateHostBuilder(args).Build().Run();
         }
 

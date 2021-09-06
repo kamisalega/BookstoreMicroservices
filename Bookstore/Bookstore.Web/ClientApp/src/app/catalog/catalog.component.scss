@@ -1,14 +1,7 @@
-@import '../variables';
+@import '../styles/variables';
 
 .bs-catalog {
   $banner-height: 260px;
-
-  &-hero {
-    background-image: url($image-main_banner);
-    background-size: cover;
-    height: $banner-height;
-    width: 100%;
-  }
 
   &-title {
     position: relative;
@@ -18,73 +11,95 @@
   $filter-height: 65px;
 
   &-filters {
-    background-color: $color-brand;
+    //background-color: $color-brand;
     height: $filter-height;
   }
 
-  $filter-padding: .5rem;
+  &-filters-wrapper {
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+  }
+
+  &-filter-wrapper {
+    margin-right: .5rem;
+    position: relative;
+
+    &:after {
+      border-bottom: 1px solid $color-secondary;
+      border-right: 1px solid $color-secondary;
+      bottom: 1rem;
+      content: '';
+      height: .5rem;
+      pointer-events: none;
+      position: absolute;
+      right: .9rem;
+      transform: rotate(45deg);
+      width: .5rem;
+      z-index: 1;
+    }
+  }
 
   &-filter {
-    -webkit-appearance: none;
+    appearance: none;
     background-color: transparent;
-    border-color: $color-brand-bright;
-    color: $color-foreground-brighter;
+    border: solid 3px $color-secondary;
+    border-radius: 0;
     cursor: pointer;
     margin-right: 1rem;
-    margin-top: .5rem;
     min-width: 140px;
     outline-color: $color-secondary;
-    padding-bottom: 0;
-    padding-left: $filter-padding;
-    padding-right: $filter-padding;
-    padding-top: $filter-padding * 3;
+    padding-left: .5rem;
+    padding-right: 2rem;
 
     option {
-      background-color: $color-brand;
+      appearance: none;
+      border: unset;
+
+      &:hover {
+        background-color: $color-primary;
+        color: $color-brightest;
+        cursor: pointer;
+      }
+
+      &:active {
+        background-color: $color-primary;
+        color: $color-brightest;
+      }
+
+      &:focus {
+        background-color: $color-primary;
+        color: $color-brightest;
+      }
+
+      &:current {
+        background-color: $color-primary;
+        color: $color-brightest;
+      }
+
+      &:selected {
+        background-color: $color-primary;
+        color: $color-brightest;
+      }
     }
   }
 
   &-label {
     display: inline-block;
+    font-size: $font-size-m;
+    margin-bottom: 0;
     position: relative;
     z-index: 0;
 
-    &::before {
-      color: rgba($color-foreground-brighter, .5);
-      content: attr(data-title);
-      font-size: $font-size-xs;
-      margin-left: $filter-padding;
-      margin-top: $font-size-xs;
-      position: absolute;
-      text-transform: uppercase;
-      z-index: 1;
-    }
-
-    &::after {
-      background-image: url($image-arrow_down);
-      content: '';
-      height: 7px; //png height
-      position: absolute;
-      right: $filter-padding * 3;
-      top: $filter-padding * 5;
-      width: 10px; //png width
-      z-index: 1;
-    }
-  }
-
-  &-send {
-    background-color: $color-secondary;
-    color: $color-foreground-brighter;
-    cursor: pointer;
-    font-size: $font-size-m;
-    margin-top: -$filter-padding * 3;
-    padding: $filter-padding;
-    transition: all $animation-speed-default;
-
-    &:hover {
-      background-color: $color-secondary-darker;
-      transition: all $animation-speed-default;
-    }
+    // &:before {
+    //     color: $color-primary;
+    //     content: attr(data-title);
+    //     font-size: $font-size-s;
+    //     left: .7rem;
+    //     top: .2rem;
+    //     position: absolute;
+    //     text-transform: uppercase;
+    //     z-index: 1;
+    // }
   }
 
   &-items {
@@ -92,63 +107,94 @@
   }
 
   &-item {
+    cursor: pointer;
     margin-bottom: 1.5rem;
-    text-align: center;
-    width: 33%;
-    display: inline-block;
-    float: none !important;
+    width: 100%;
+    padding-bottom: .5rem;
 
-    @media screen and (max-width: $media-screen-m) {
-      width: 50%;
+    &:hover {
+      background-color: $color-brightest;
+
+      .bs-catalog-thumbnail-icon {
+        opacity: 1;
+      }
     }
 
-    @media screen and (max-width: $media-screen-s) {
-      width: 100%;
+    &.is-disabled {
+      background-color: unset;
+      cursor: default;
+
+      .bs-catalog-thumbnail-icon {
+        display: none !important;
+      }
     }
+  }
+
+  &-category {
+    &-name {
+      font-size: $font-size-m;
+    }
+  }
+
+  &-thumbnail-wrapper {
+    background-color: #dbdede;
+    height: 0;
+    overflow: hidden;
+    padding-top: 100%;
+    position: relative;
+  }
+
+  &-thumbnail-icon {
+    background-color: $color-primary;
+    border-radius: 50%;
+    height: 3.5rem;
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 3.5rem;
+    z-index: 20;
+    transition: all $animation-speed-default;
+  }
+
+  &-thumbnail-icon-svg {
+    height: auto;
+    width: 1.5rem;
   }
 
   &-thumbnail {
-    max-width: 370px;
-    width: 100%;
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    z-index: 10;
   }
 
-  &-button {
-    background-color: $color-secondary;
-    border: 0;
-    color: $color-foreground-brighter;
-    cursor: pointer;
-    font-size: $font-size-m;
-    height: 3rem;
-    margin-top: 1rem;
-    transition: all $animation-speed-default;
-    width: 80%;
-
-    &.is-disabled {
-      opacity: .5;
-      pointer-events: none;
-    }
-
-    &:hover {
-      background-color: $color-secondary-darker;
-      transition: all $animation-speed-default;
-    }
+  &-details {
+    margin-top: .5rem;
   }
 
   &-name {
     font-size: $font-size-m;
-    font-weight: $font-weight-semilight;
-    margin-top: .5rem;
-    text-align: center;
+    margin-bottom: .5rem;
     text-transform: uppercase;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    border-bottom: 0.1rem solid $color-secondary-brightest;
   }
 
   &-price {
-    font-size: 28px;
-    font-weight: 900;
-    text-align: center;
+    color: $color-primary;
+    font-size: $font-size-m;
 
     &::before {
-      content: 'PLN ';
+      content: '$';
     }
   }
 

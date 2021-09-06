@@ -6,6 +6,7 @@ using IdentityServer4;
 using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,22 +43,34 @@ namespace Bookstore.Services.Identity
             // in-memory, code config
             builder.AddInMemoryIdentityResources(Config.IdentityResources);
             builder.AddInMemoryApiScopes(Config.ApiScopes);
+            builder.AddInMemoryApiResources(Config.ApiResources);
             builder.AddInMemoryClients(Config.Clients);
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            // services.AddCors(options =>
+            // {
+            //     options.AddPolicy("CorsPolicy", corsBuilder =>
+            //     {
+            //         corsBuilder.AllowAnyHeader()
+            //             .AllowAnyMethod()
+            //             .SetIsOriginAllowed(origin => origin == "http://localhost:5000")
+            //             .AllowCredentials();
+            //     });
+            // });
 
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to https://localhost:5001/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
-                });
+            // services.AddAuthentication()
+            //     .AddGoogle(options =>
+            //     {
+            //         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+            //
+            //         // register your IdentityServer with Google at https://console.developers.google.com
+            //         // enable the Google+ API
+            //         // set the redirect URI to https://localhost:5001/signin-google
+            //         options.ClientId = "copy client ID from Google here";
+            //         options.ClientSecret = "copy client secret from Google here";
+            //     });
         }
 
         public void Configure(IApplicationBuilder app)
@@ -68,7 +81,7 @@ namespace Bookstore.Services.Identity
             }
 
             app.UseStaticFiles();
-
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();

@@ -3,13 +3,18 @@ import {Subject} from "rxjs";
 import {Guid} from "../../../../guid";
 import {ICatalogItem} from "../models/catalogItem.model";
 import {IBasketItem} from "../models/basketItem.model";
+import {SecurityService} from "./security.service";
+import {IBasket} from "../models/basket.model";
+import {IBook} from "../models/book.model";
+import {IAuthor} from "../models/author.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasketWrapperService {
+  public basket: IBasket;
 
-  constructor() {
+  constructor(private identityService: SecurityService) {
   }
 
   // observable that is fired when a product is added to the cart
@@ -20,26 +25,43 @@ export class BasketWrapperService {
   orderCreated$ = this.orderCreatedSource.asObservable();
 
   addItemToBasket(item: ICatalogItem) {
-    // if (this.identityService.IsAuthorized) {
-    let basket: IBasketItem = {
-      pictureUrl: item.imageUrl,
-      productId: item.id,
-      productName: item.categoryName,
-      quantity: 1,
-      unitPrice: item.price,
-      id: Guid.newGuid(),
-      oldUnitPrice: 0
-    };
-    //
-    //   this.addItemToBasketSource.next(basket);
-    // } else {
-    //   // this.identityService.Authorize();
-    // }
+    if (this.identityService.IsAuthorized) {
+
+      let newAuthor: IAuthor = {
+        id: item.authorId,
+        name: '',
+        age: 0
+
+      }
+
+      let newBook: IBook = {
+        bookId: item.id,
+        title: item.title,
+        imageUrl: item.imageUrl,
+        date: item.date,
+        author: newAuthor,
+        price: item.price
+      };
+
+      let basket: IBasketItem = {
+        book: newBook,
+        bookId: item.id,
+        basketId: item.basketId,
+        bookAmount: 1,
+        price: item.price,
+        basketLineId: Guid.newGuid()
+        // oldUnitPrice: 0
+      };
+
+      this.addItemToBasketSource.next(basket);
+    } else {
+      this.identityService.authorize();
+    }
   }
+
 
   orderCreated() {
     this.orderCreatedSource.next();
-
   }
 }
 

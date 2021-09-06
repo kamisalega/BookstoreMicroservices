@@ -4,8 +4,11 @@ using Bookstore.Integration.MessagingBus;
 using Bookstore.Services.ShoppingBasket.DbContexts;
 using Bookstore.Services.ShoppingBasket.Repositories;
 using Bookstore.Services.ShoppingBasket.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +31,22 @@ namespace Bookstore.Services.ShoppingBasket
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
+            services.AddControllers(configure =>
+            {
+                configure.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
+            });
+            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5010";
+                    options.Audience = "bookstore";
+                });
+
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -44,7 +62,8 @@ namespace Bookstore.Services.ShoppingBasket
 
             services.AddHttpClient<IDiscountService, DiscountService>(c =>
                     c.BaseAddress = new Uri(Configuration["ApiConfigs:Discount:Uri"]))
-                .AddPolicyHandler(GetRetryPolicy()).AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddDbContext<ShoppingBasketDbContext>(options =>
             {
@@ -54,6 +73,16 @@ namespace Bookstore.Services.ShoppingBasket
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Shopping Basket API", Version = "v1"});
+            });
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
         }
 
@@ -69,11 +98,13 @@ namespace Bookstore.Services.ShoppingBasket
             app.UseHttpsRedirection();
 
             app.UseSwagger();
+            app.UseCors("CorsPolicy");
 
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Shopping Basket API V1"); });
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });

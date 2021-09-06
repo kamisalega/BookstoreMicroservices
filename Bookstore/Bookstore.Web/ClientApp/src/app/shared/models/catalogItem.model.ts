@@ -8,6 +8,7 @@ export interface ICatalogItem {
   price: number;
   imageUrl: string;
   date: string;
+  basketId: string;
   // catalogBrandId: number;
   // catalogBrand: string;
   // catalogTypeId: number;

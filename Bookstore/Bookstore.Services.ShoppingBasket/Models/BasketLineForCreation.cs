@@ -9,8 +9,8 @@ namespace Bookstore.Services.ShoppingBasket.Models
         [Required]
         public Guid BookId { get; set; }
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
         [Required]
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
     }
 }

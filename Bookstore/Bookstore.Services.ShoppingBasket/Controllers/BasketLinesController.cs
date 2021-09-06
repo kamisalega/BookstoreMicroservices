@@ -25,7 +25,8 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
 
         public BasketLinesController(IBasketRepository basketRepository,
             IBasketLinesRepository basketLinesRepository, IBookRepository bookRepository,
-            IBookCatalogService bookCatalogService, IMapper mapper, IBasketChangeBookRepository basketChangeBookRepository)
+            IBookCatalogService bookCatalogService, IMapper mapper,
+            IBasketChangeBookRepository basketChangeBookRepository)
         {
             this.basketRepository = basketRepository;
             this.basketLinesRepository = basketLinesRepository;
@@ -48,8 +49,7 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         }
 
         [HttpGet("{basketLineId}", Name = "GetBasketLine")]
-        public async Task<ActionResult<BasketLine>> Get(Guid basketId,
-            Guid basketLineId)
+        public async Task<ActionResult<BasketLine>> Get(Guid basketId, Guid basketLineId)
         {
             if (!await basketRepository.BasketExists(basketId))
             {
@@ -66,7 +66,8 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BasketLine>> Post(Guid basketId, [FromBody] BasketLineForCreation basketLineForCreation)
+        public async Task<ActionResult<BasketLine>> Post(Guid basketId,
+            [FromBody] BasketLineForCreation basketLineForCreation)
         {
             var basket = await basketRepository.GetBasketById(basketId);
 
@@ -75,9 +76,11 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
                 return NotFound();
             }
 
-            if (!await bookRepository.BookExists(basketLineForCreation.BookId))
+            if (basketLineForCreation.BookId != Guid.Empty &&
+                !await bookRepository.BookExists(basketLineForCreation.BookId))
             {
                 var bookFromCatalog = await bookCatalogService.GetBook(basketLineForCreation.BookId);
+                bookFromCatalog.BookId = basketLineForCreation.BookId;
                 bookRepository.AddBook(bookFromCatalog);
                 await bookRepository.SaveChanges();
             }

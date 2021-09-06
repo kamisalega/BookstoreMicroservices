@@ -19,7 +19,15 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
         public async Task<Basket> GetBasketById(Guid basketId)
         {
             return await shoppingBasketDbContext.Baskets.Include(sb => sb.BasketLines)
+                .ThenInclude(sb => sb.Book).ThenInclude(sb => sb.Author)
                 .Where(b => b.BasketId == basketId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Basket> GetBasketByUserId(Guid userId)
+        {
+            return await shoppingBasketDbContext.Baskets.Include(sb => sb.BasketLines)
+                .ThenInclude(sb => sb.Book)
+                .Where(b => b.UserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<bool> BasketExists(Guid basketId)

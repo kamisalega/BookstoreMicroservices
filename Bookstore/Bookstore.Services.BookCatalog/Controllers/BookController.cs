@@ -39,7 +39,8 @@ namespace Bookstore.Services.BookCatalog.Controllers
         public async Task<ActionResult<Models.BookDto>> GetById(Guid bookId)
         {
             var result = await _bookRepository.GetBookById(bookId);
-            return Ok(_mapper.Map<Models.BookDto>(result));
+            var booksOnPage = _mapper.Map<Models.BookDto>(result);
+            return Ok(booksOnPage);
         }
     }
 }

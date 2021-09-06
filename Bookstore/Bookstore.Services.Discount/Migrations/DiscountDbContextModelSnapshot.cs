@@ -34,6 +34,9 @@ namespace Bookstore.Services.Discount.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("CouponId");
 
                     b.ToTable("Coupons");
@@ -41,24 +44,27 @@ namespace Bookstore.Services.Discount.Migrations
                     b.HasData(
                         new
                         {
-                            CouponId = new Guid("0be058a4-72ad-406e-9e52-40ef9f2f0423"),
+                            CouponId = new Guid("9e2d037c-d46a-4d02-910d-3e06791cda1d"),
                             AlreadyUsed = false,
                             Amount = 10,
-                            Code = "SuperKsiazka"
+                            Code = "SuperKsiazka",
+                            UserId = new Guid("e455a3df-7fa5-47e0-8435-179b300d531f")
                         },
                         new
                         {
-                            CouponId = new Guid("b71f0000-a7ea-418d-902f-7aa0f4c977c3"),
+                            CouponId = new Guid("91378f11-6f7a-4f8b-ac1d-fa288f6e2673"),
                             AlreadyUsed = false,
                             Amount = 20,
-                            Code = "Wow"
+                            Code = "Wow",
+                            UserId = new Guid("bbf594b0-3761-4a65-b04c-eec4836d9070")
                         },
                         new
                         {
-                            CouponId = new Guid("a52b3dde-d046-4e75-bf6c-3368b7fd8204"),
+                            CouponId = new Guid("20c5a056-b4be-4db9-bb4c-fb7dc97dffc4"),
                             AlreadyUsed = false,
                             Amount = 100,
-                            Code = "WszystkoZaDarmo"
+                            Code = "WszystkoZaDarmo",
+                            UserId = new Guid("3ebca9a3-1b10-469b-a3db-46bdda9d42a4")
                         });
                 });
 #pragma warning restore 612, 618

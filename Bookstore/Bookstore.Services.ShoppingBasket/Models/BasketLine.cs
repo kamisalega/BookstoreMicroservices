@@ -1,5 +1,4 @@
 using System;
-using Bookstore.Services.ShoppingBasket.Entities;
 
 namespace Bookstore.Services.ShoppingBasket.Models
 {
@@ -9,7 +8,7 @@ namespace Bookstore.Services.ShoppingBasket.Models
         public Guid BasketId { get; set; }
         public Guid BookId { get; set; }
         public int Price { get; set; }
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
         public Book Book { get; set; }
     }
 }

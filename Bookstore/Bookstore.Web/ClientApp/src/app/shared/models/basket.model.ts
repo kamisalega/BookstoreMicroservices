@@ -1,6 +1,10 @@
 import {IBasketItem} from "./basketItem.model";
 
 export interface IBasket {
-  items: IBasketItem[];
-  buyerId: string;
+  basketLines: IBasketItem[];
+  userId: string;
+  basketId: string;
+  bookId: string;
+  bookAmount: number,
+  couponId: string,
 }
