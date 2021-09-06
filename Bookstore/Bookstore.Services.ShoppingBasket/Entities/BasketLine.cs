@@ -20,7 +20,7 @@ namespace Bookstore.Services.ShoppingBasket.Entities
         public int BookAmount { get; set; }
 
         [Required]
-        public int Price { get; set; }
+        public double Price { get; set; }
 
         public Basket Basket { get; set; }
     }

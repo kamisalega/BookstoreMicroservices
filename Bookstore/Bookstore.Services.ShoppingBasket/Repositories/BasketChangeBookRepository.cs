@@ -20,7 +20,6 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
         public async Task AddBasketBook(BasketChangeBook basketChangeBook)
         {
             await shoppingBasketDbContext.BasketChangeBooks.AddAsync(basketChangeBook);
-            await shoppingBasketDbContext.SaveChangesAsync();
         }
 
         public async Task<List<BasketChangeBook>> GetBasketChangeBooks(DateTime startDate, int max)
@@ -34,6 +33,23 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
 
             // .Where(b => b.InsertedAt > startDate)
             // .OrderBy(b => b.InsertedAt).Take(max);
+        }
+        
+        public async Task<bool> SaveChanges()
+        {
+            var timesmap = DateTime.Now;
+            foreach (var entry in shoppingBasketDbContext.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+            {
+                entry.Property("LastModified").CurrentValue = timesmap;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("Created").CurrentValue = timesmap;
+                }
+            }
+
+            return (await shoppingBasketDbContext.SaveChangesAsync() > 0);
         }
     }
 }

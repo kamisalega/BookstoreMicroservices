@@ -22,15 +22,18 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         private readonly IBookCatalogService bookCatalogService;
         private readonly IMapper mapper;
         private readonly IBasketChangeBookRepository basketChangeBookRepository;
+        private readonly IAuthorRepository _authorRepository;
 
         public BasketLinesController(IBasketRepository basketRepository,
             IBasketLinesRepository basketLinesRepository, IBookRepository bookRepository,
             IBookCatalogService bookCatalogService, IMapper mapper,
-            IBasketChangeBookRepository basketChangeBookRepository)
+            IBasketChangeBookRepository basketChangeBookRepository,
+            IAuthorRepository authorRepository)
         {
             this.basketRepository = basketRepository;
             this.basketLinesRepository = basketLinesRepository;
             this.bookRepository = bookRepository;
+            _authorRepository = authorRepository;
             this.bookCatalogService = bookCatalogService;
             this.basketChangeBookRepository = basketChangeBookRepository;
             this.mapper = mapper;
@@ -76,8 +79,7 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
                 return NotFound();
             }
 
-            if (basketLineForCreation.BookId != Guid.Empty &&
-                !await bookRepository.BookExists(basketLineForCreation.BookId))
+            if (!await bookRepository.BookExists(basketLineForCreation.BookId))
             {
                 var bookFromCatalog = await bookCatalogService.GetBook(basketLineForCreation.BookId);
                 bookFromCatalog.BookId = basketLineForCreation.BookId;
@@ -101,6 +103,7 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
                 UserId = basket.UserId
             };
             await basketChangeBookRepository.AddBasketBook(basketChangeBook);
+            await basketChangeBookRepository.SaveChanges();
 
             return CreatedAtRoute(
                 "GetBasketLine",
@@ -139,11 +142,6 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         [HttpDelete("{basketLineId}")]
         public async Task<IActionResult> Delete(Guid basketId, Guid basketLineId)
         {
-            //if (!await basketRepository.BasketExists(basketId))
-            //{
-            //    return NotFound();
-            //}
-
             var basket = await basketRepository.GetBasketById(basketId);
 
             if (basket == null)
@@ -170,8 +168,9 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
                 UserId = basket.UserId
             };
             await basketChangeBookRepository.AddBasketBook(basketChangeBook);
+            await basketChangeBookRepository.SaveChanges();
 
-            return NoContent();
+            return Ok();
         }
     }
 }

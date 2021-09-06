@@ -8,7 +8,9 @@ namespace Bookstore.Services.ShoppingBasket.Profiles
     {
         public BasketCheckoutProfile()
         {
+            CreateMap<AddressUser, AddressMessage>().ReverseMap();
             CreateMap<BasketCheckout, BasketCheckoutMessage>().ReverseMap();
+
         }
     }
 }

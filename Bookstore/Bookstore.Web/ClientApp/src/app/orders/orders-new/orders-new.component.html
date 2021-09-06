@@ -1,0 +1,136 @@
+<div class="container">
+  <h1 class="mb-4 mt-5">[ Płatności ]</h1>
+  <div class="alert" role="alert" [hidden]="!errorReceived">
+    Nie można utworzyć nowego zamówienia, spróbuj później
+  </div>
+
+  <form [formGroup]="newOrderForm" (ngSubmit)="submitForm(newOrderForm.value)">
+    <section class="u-background-brightest p-5">
+      <h2 class="mb-4">Adres wysyłki</h2>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group"
+               [ngClass]="{'has-error': !newOrderForm.controls['street'].valid && newOrderForm.controls['street'].touched}">
+            <label>Adres</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="Ulica"
+                   [formControl]="newOrderForm.controls['street']">
+            <div *ngIf="newOrderForm.controls['street'].hasError('required') && newOrderForm.controls['street'].touched"
+                 class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group"
+               [ngClass]="{'has-error': !newOrderForm.controls['city'].valid && newOrderForm.controls['city'].touched}">
+            <label>Miasto</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="Miasto"
+                   [formControl]="newOrderForm.controls['city']">
+            <div *ngIf="newOrderForm.controls['city'].hasError('required') && newOrderForm.controls['city'].touched"
+                 class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['state'].valid && newOrderForm.controls['state'].touched}">
+            <label>Województwo</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="Województwo"
+                   [formControl]="newOrderForm.controls['state']">
+            <div *ngIf="newOrderForm.controls['state'].hasError('required') && newOrderForm.controls['state'].touched"
+                 class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['country'].valid && newOrderForm.controls['country'].touched}">
+            <label>Państwo</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="Państwo"
+                   [formControl]="newOrderForm.controls['country']">
+            <div
+              *ngIf="newOrderForm.controls['country'].hasError('required') && newOrderForm.controls['country'].touched"
+              class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="mt-5 mb-4">Metoda płatności</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['cardNumber'].valid && newOrderForm.controls['cardNumber'].touched}">
+            <label>Numer karty kredytowej</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="000000000000000"
+                   [formControl]="newOrderForm.controls['cardNumber']">
+            <div
+              *ngIf="newOrderForm.controls['cardNumber'].hasError('required') && newOrderForm.controls['cardNumber'].touched"
+              class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['cardHolderName'].valid && newOrderForm.controls['cardHolderName'].touched}">
+            <label>Imię właściciela karty</label>
+            <input class="form-control form-input w-100 u-maxwidth-unset" type="text" placeholder="Imię właściciela karty"
+                   [formControl]="newOrderForm.controls['cardHolderName']">
+            <div
+              *ngIf="newOrderForm.controls['cardHolderName'].hasError('required') && newOrderForm.controls['cardHolderName'].touched"
+              class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['expirationDate'].valid && newOrderForm.controls['expirationDate'].touched}">
+            <label>Termin ważności</label>
+            <input class="form-control form-input w-50 u-maxwidth-unset" type="text" placeholder="MM/RR"
+                   [formControl]="newOrderForm.controls['expirationDate']">
+            <div
+              *ngIf="newOrderForm.controls['expirationDate'].hasError('required') && newOrderForm.controls['expirationDate'].touched"
+              class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group"
+               [ngClass]="{'has-error':!newOrderForm.controls['securityCode'].valid && newOrderForm.controls['securityCode'].touched}">
+            <label class="bs-orders_new-title">Kod bezpieczeństwa</label>
+            <input class="form-control form-input w-50 u-maxwidth-unset" type="text" placeholder="000"
+                   [formControl]="newOrderForm.controls['securityCode']">
+            <div
+              *ngIf="newOrderForm.controls['securityCode'].hasError('required') && newOrderForm.controls['securityCode'].touched"
+              class="alert alert-danger">Pole wymagane
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="mt-5 mb-4">Szczegóły zamówienia</h2>
+      <article class="divider divider--bottom d-flex align-items-center pb-3 mt-3 u-text-sm"
+                    *ngFor="let book of order.orderBooks">
+        <div class="bs-orders_new-thumbnail-container">
+          <div class="bs-orders_new-thumbnail-wrapper">
+            <img class="bs-orders_new-thumbnail" src="{{book.imageUrl}}">
+          </div>
+        </div>
+        <div class="row w-100 ml-3">
+          <div class="col-6">{{book.bookName}}</div>
+          <div class="col-2">{{book.unitPrice | number: '.2-2'}} PLN</div>
+          <div class="col-2">{{book.units}}</div>
+          <div class="col-2 text-right">{{(book.units * book.unitPrice) | number:'.2-2'}} PLN</div>
+        </div>
+      </article>
+      <div class="divider d-flex align-items-center justify-content-end mb-4 pt-4 text-uppercase u-text-xl">
+        <div>Do zapłaty</div>
+        <div class="ml-3">{{order.total | number:'.2-2'}} PLN</div>
+      </div>
+
+      <div class="bs-orders_new-buttons d-flex justify-content-end align-items-center">
+        <a class="btn btn-secondary" routerLink="/basket">Powrót do koszyka</a>
+
+        <button class="btn btn-primary ml-3" [disabled]="!newOrderForm.valid || isOrderProcessing">Złóż zamówienie</button>
+      </div>
+    </section>
+  </form>
+</div>

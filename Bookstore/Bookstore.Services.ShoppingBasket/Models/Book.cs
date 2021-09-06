@@ -10,6 +10,7 @@ namespace Bookstore.Services.ShoppingBasket.Models
         public DateTime Date { get; set; }
         public string ImageUrl { get; set; }
         public double Price { get; set; }
+        public Guid AuthorId { get; set; }
         public Author Author { get; set; }
     }
 }

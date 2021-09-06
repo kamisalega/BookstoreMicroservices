@@ -15,6 +15,7 @@ export class BasketComponent implements OnInit {
   errorMessages:any;
   basket: IBasket;
   totalPrice: number = 0;
+  onError: ErrorEvent;
 
   constructor(
     private basketService: BasketService,
@@ -48,7 +49,7 @@ export class BasketComponent implements OnInit {
   itemQuantityChanged(item: IBasketItem, quantity: number) {
     item.bookAmount = quantity > 0 ? quantity : 1;
     this.calculateTotalPrice();
-    this.basketService.updateBasket(item).subscribe(x => {
+    this.basketService.updateBasketLine(item).subscribe(x => {
       this.basketService.updateQuantity();
       console.log('basket updated: ' + x)
 
@@ -56,7 +57,7 @@ export class BasketComponent implements OnInit {
   }
 
   update(event: any): Observable<boolean> {
-    let setBasketObservable = this.basketService.setBasketLines(this.basket);
+    let setBasketObservable = this.basketService.updateBasket(this.basket);
     setBasketObservable
       .subscribe(
         x => {
@@ -85,4 +86,8 @@ export class BasketComponent implements OnInit {
     });
   }
 
+
+  onImageError(item: IBasketItem) {
+    item.book.imageUrl = 'assets/images/Book.svg'
+  }
 }
