@@ -1,20 +1,16 @@
-<header class="bs-app-header">
+<header class="bs-app-header" [ngClass]="{'bs-app-header':true, 'bs-app-header--expanded': router.url === '/catalog'}">
   <div class="container">
-    <article class="row">
-      <section class="col-lg-7 col-md-6 col-12">
-        <a class="navbar-brand" routerLink="catalog">
-          <img src="./assets/images/brand.png"  alt=""/>
+    <article class="d-flex align-content-center justify-content-between">
+      <section>
+        <a  routerLink="catalog">
+          <img class="bs-app-header-brand" src="./assets/images/logo_color.svg"  alt=""/>
         </a>
       </section>
 
-<!--      <section class="col-lg-4 col-md-5 col-12">-->
-<!--        <bs-identity></bs-identity>-->
-<!--      </section>-->
-
-<!--      <section class="col-lg-1 col-12">-->
-<!--        <esh-basket-status *ngIf="Authenticated"></esh-basket-status>-->
-<!--      </section>-->
-
+      <section class="d-flex align-content-center justify-content-between">
+        <bs-identity></bs-identity>
+        <bs-basket-status *ngIf="Authenticated"></bs-basket-status>
+      </section>
     </article>
   </div>
 </header>
@@ -22,18 +18,16 @@
 <!-- component routing placeholder -->
 <router-outlet></router-outlet>
 
-<footer class="esh-app-footer">
+<footer class="bs-app-footer">
   <div class="container">
-    <article class="row">
-
-      <section class="col-sm-6">
-        <img class="esh-app-footer-brand" src="assets/images/brand_dark.png" />
+    <article class="d-flex w-100 h-100 justify-content-between align-items-center">
+      <section>
+        <img class="bs-app-footer-brand" src="assets/images/logo.svg" />
       </section>
 
-      <section class="col-sm-6">
-        <img class="esh-app-footer-text hidden" src="assets/images/main_footer_text.png" width="335" height="26" alt="footer text image" />
+      <section>
+        © e-Shoponcontainers. All rights reserved
       </section>
-
     </article>
   </div>
 </footer>

@@ -10,14 +10,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Bookstore.Services.BookCatalog
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        // readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -29,39 +32,24 @@ namespace Bookstore.Services.BookCatalog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(setupActions => { setupActions.ReturnHttpNotAcceptable = true; })
-                .AddXmlDataContractSerializerFormatters()
-                .ConfigureApiBehaviorOptions(setupAction =>
-                    {
-                        setupAction.InvalidModelStateResponseFactory = context =>
-                        {
-                            var problemDetails = new ValidationProblemDetails(context.ModelState)
-                            {
-                                Type = "https://library.com/modelvalidationproblem",
-                                Title = "One more validation errors occurred.",
-                                Status = StatusCodes.Status422UnprocessableEntity,
-                                Detail = "See the errors property for details.",
-                                Instance = context.HttpContext.Request.Path
-                            };
+            // var requireAuthenticatedUserPolicy = new AuthorizationPolicyBuilder()
+            //     .RequireAuthenticatedUser()
+            //     .Build();
+            services.AddControllers(setupActions =>
+                {
+                    // setupActions.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
+                });
 
-                            problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
-
-                            return new UnprocessableEntityObjectResult(problemDetails)
-                            {
-                                ContentTypes = {"application/problem+json"}
-                            };
-                        };
-                    }
-                );
             services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:44339",
-                            "https://localhost:44390");
-                    });
-            });
+                {
+                    options.AddPolicy("CorsPolicy",
+                        builder => builder
+                            .SetIsOriginAllowed((host) => true)
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials());
+                });
+
             services.AddDbContext<BookCatalogDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -75,6 +63,13 @@ namespace Bookstore.Services.BookCatalog
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Book Catalog API", Version = "v1"});
             });
+
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options =>
+            //     {
+            //         options.Authority = "https://localhost:5010";
+            //         options.Audience = "bookstore";
+            //     });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,9 +89,11 @@ namespace Bookstore.Services.BookCatalog
 
             app.UseRouting();
 
+            // app.UseAuthentication();
+
             app.UseAuthorization();
 
-            app.UseCors(MyAllowSpecificOrigins);
+             app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

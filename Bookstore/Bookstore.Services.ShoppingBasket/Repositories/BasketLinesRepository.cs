@@ -36,16 +36,20 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
             if (existingLine == null)
             {
                 basketLine.BasketId = basketId;
+                
+                basketLine.Book =  shoppingBasketDbContext.Books
+                    .FirstOrDefault(book => book.BookId == basketLine.BookId);
                 shoppingBasketDbContext.BasketLines.Add(basketLine);
                 return basketLine;
             }
-            existingLine.TicketAmount += basketLine.TicketAmount;
+            existingLine.BookAmount += basketLine.BookAmount;
+            shoppingBasketDbContext.BasketLines.Update(existingLine);
             return existingLine;
         }
 
         public void UpdateBasketLine(BasketLine basketLine)
         {
-            // empty on purpose
+            shoppingBasketDbContext.BasketLines.Update(basketLine);
         }
 
         public void RemoveBasketLine(BasketLine basketLine)

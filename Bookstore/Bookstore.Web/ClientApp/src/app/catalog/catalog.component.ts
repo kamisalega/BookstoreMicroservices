@@ -11,6 +11,7 @@ import {Observable, Subscription} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {ICatalogItem} from "../shared/models/catalogItem.model";
 import {BasketWrapperService} from "../shared/services/basket.wrapper.service";
+import {SecurityService} from "../shared/services/security.service";
 
 
 @Component({
@@ -33,8 +34,9 @@ export class CatalogComponent implements OnInit {
     private service: CatalogService,
     private basketService: BasketWrapperService,
     private configurationService: ConfigurationService,
-    // private securityService: SecurityService
+    private securityService: SecurityService
   ) {
+    this.authenticated = securityService.IsAuthorized;
   }
 
   ngOnInit(): void {
@@ -46,9 +48,9 @@ export class CatalogComponent implements OnInit {
       });
 
     // Subscribe to login and logout observable
-    // this.authSubscription = this.securityService.authenticationChallenge$.subscribe(res => {
-    //   this.authenticated = res;
-    // });
+    this.authSubscription = this.securityService.authenticationChallenge$.subscribe(res => {
+      this.authenticated = res;
+    });
   }
 
   loadData() {

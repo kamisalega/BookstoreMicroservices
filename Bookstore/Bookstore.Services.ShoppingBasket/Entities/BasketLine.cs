@@ -17,7 +17,7 @@ namespace Bookstore.Services.ShoppingBasket.Entities
         public Book Book { get; set; }
 
         [Required]
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
 
         [Required]
         public int Price { get; set; }

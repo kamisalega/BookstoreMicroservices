@@ -5,6 +5,6 @@ namespace Bookstore.Services.ShoppingBasket.Models
     public class BasketLineForUpdate
     {
         [Required]
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
     }
 }

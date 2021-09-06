@@ -18,7 +18,7 @@ namespace Bookstore.Web
 
         public Startup()
         {
-            var localPath = new Uri(Configuration["PurchaseUrl"])?.LocalPath ?? "/";
+            var localPath = new Uri(Configuration["ASPNETCORE_URLS"])?.LocalPath ?? "/";
             Configuration["BaseUrl"] = localPath;
         }
 

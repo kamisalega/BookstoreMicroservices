@@ -13,6 +13,7 @@ namespace Bookstore.Services.BookCatalog.Models
         public string ImageUrl { get; set; }
         public DateTime Date { get; set; }
         public Guid AuthorId { get; set; }
+        public AuthorDto Author { get; set; }
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; }
     }

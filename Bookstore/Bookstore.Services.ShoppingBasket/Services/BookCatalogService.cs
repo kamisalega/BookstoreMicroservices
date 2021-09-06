@@ -17,7 +17,8 @@ namespace Bookstore.Services.ShoppingBasket.Services
 
         public async Task<Book> GetBook(Guid id)
         {
-            var response = await client.GetAsync($"/api/books/{id}");
+            var response = await client.GetAsync($"/api/books/{id.ToString()}");
+            
             return await response.ReadContentAs<Book>();
         }
     }

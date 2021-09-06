@@ -6,6 +6,6 @@ namespace Bookstore.Services.ShoppingBasket.Messages
     {
         public Guid BasketLineId { get; set; }
         public int Price { get; set; }
-        public int TicketAmount { get; set; }
+        public int BookAmount { get; set; }
     }
 }

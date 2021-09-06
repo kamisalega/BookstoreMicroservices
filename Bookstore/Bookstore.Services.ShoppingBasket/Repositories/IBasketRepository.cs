@@ -9,6 +9,7 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
         Task<bool> BasketExists(Guid basketId);
 
         Task<Basket> GetBasketById(Guid basketId);
+        Task<Basket> GetBasketByUserId(Guid userId);
 
         void AddBasket(Basket basket);
 
