@@ -58,6 +58,10 @@ export class DataService {
     return this.doPost(url, data, false, params)
   }
 
+  postWithId(url: string, data: any, params?: any): Observable<Response> {
+    return this.doPost(url, data, true, params)
+  }
+
   put(url: string, data: any, params?: any): Observable<Response> {
     return this.doPut(url, data, false, params);
   }

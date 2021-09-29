@@ -13,7 +13,7 @@ namespace Bookstore.Integration.MessagingBus
         private ISenderClient _topicClient;
         //TODO: read from settings
         private string connectionString =
-            "Endpoint=sb://bookstore-sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=6jtcZwr83MmNl3V2Int0evsH95snmUTHEDhlsrTeiN8=";
+            "Endpoint=sb://bookstore.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=9zLig821jtADLbJRlgiY+tNFjQPrWp1QeE/yqNFi5/Q=";
 
         public async Task PublishMessage(IntegrationBaseMessage message, string topicName)
         {

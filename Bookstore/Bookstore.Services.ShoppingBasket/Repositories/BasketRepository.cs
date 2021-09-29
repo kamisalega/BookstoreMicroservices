@@ -54,6 +54,17 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
 
         public async Task<bool> SaveChanges()
         {
+            foreach (var entry in shoppingBasketDbContext.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+            {
+                entry.Property("LastModified").CurrentValue = DateTime.Now;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Property("Created").CurrentValue = DateTime.Now;
+                }
+            }
+            
             return (await shoppingBasketDbContext.SaveChangesAsync() > 0);
         }
     }

@@ -15,10 +15,11 @@
                 <div class="bs-basket-delete" (click)="deleteLine(item)">
                   <img class="bs-basket-delete-svg" src="assets/images/delete.svg">
                 </div>
-                <img class="bs-basket-thumbnail" src="{{item.book.imageUrl}}">
+                <img class="bs-basket-thumbnail" src="{{item.book.imageUrl}}" (error)="onImageError(item)">
               </div>
               <div class="d-block p-1">
-                <div class="bs-basket-author">{{item.book.author.name}}</div>
+                <div class="bs-basket-author" *ngIf="item.book.author">{{item.book.author.name}}</div>
+                <div class="bs-basket-author" *ngIf="!item.book.author">Nieznany</div>
                 <div class="bs-basket-title">{{item.book.title}}</div>
               </div>
 
@@ -42,10 +43,10 @@
                 <div class="bs-basket-price text-right">{{(item.book.price * item.bookAmount) | number:'.2-2'}}PLN
                 </div>
               </div>
-              <div class="" *ngIf="item.price > 0">
-                Zwróć uwagę, że cena tego artykułu zmieniła się w naszym Katalogu.
-                Stara cena w momencie dodania jej do koszyka była {{item.price}} PLN.
-              </div>
+<!--              <div class="" *ngIf="item.price > 0">-->
+<!--                Zwróć uwagę, że cena tego artykułu zmieniła się w naszym Katalogu.-->
+<!--                Stara cena w momencie dodania jej do koszyka była {{item.price}} PLN.-->
+<!--              </div>-->
             </article>
           </div>
         </div>

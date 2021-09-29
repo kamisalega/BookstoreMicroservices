@@ -9,5 +9,6 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
     {
         Task AddBasketBook(BasketChangeBook basketChangeBook);
         Task<List<BasketChangeBook>> GetBasketChangeBooks(DateTime startDate, int max);
+        Task<bool> SaveChanges();
     }
 }
