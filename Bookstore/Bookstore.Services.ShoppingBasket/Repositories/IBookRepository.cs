@@ -10,5 +10,6 @@ namespace Bookstore.Services.ShoppingBasket.Repositories
         void AddBook(Book theBook);
         Task<bool> BookExists(Guid BookId);
         Task<bool> SaveChanges();
+        void RemoveBook(Book book);
     }
 }

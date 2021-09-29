@@ -3,5 +3,6 @@ export interface IConfiguration {
   signalrHubUrl: string;
   purchaseUrl: string,
   identityUrl: string,
+  orderUrl: string,
   activateCampaignDetailFunction: boolean
 }

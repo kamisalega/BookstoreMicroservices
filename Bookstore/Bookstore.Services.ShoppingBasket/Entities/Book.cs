@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bookstore.Services.ShoppingBasket.Entities
 {
@@ -12,6 +13,8 @@ namespace Bookstore.Services.ShoppingBasket.Entities
         
         public double Price { get; set; }
         
+        [Required]
+        public Guid AuthorId { get; set; }
         public Author Author { get; set; }
     }
 }

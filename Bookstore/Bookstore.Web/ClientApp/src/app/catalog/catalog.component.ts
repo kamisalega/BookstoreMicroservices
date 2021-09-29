@@ -12,6 +12,7 @@ import {catchError} from "rxjs/operators";
 import {ICatalogItem} from "../shared/models/catalogItem.model";
 import {BasketWrapperService} from "../shared/services/basket.wrapper.service";
 import {SecurityService} from "../shared/services/security.service";
+import {IBasketItem} from "../shared/models/basketItem.model";
 
 
 @Component({
@@ -122,5 +123,7 @@ export class CatalogComponent implements OnInit {
     return Observable.throw(error);
   }
 
-
+  onImageError(item: ICatalogItem) {
+    item.imageUrl = 'assets/images/Book.svg'
+  }
 }

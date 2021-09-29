@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using Bookstore.Integration.MessagingBus;
+using Bookstore.Services.BookCatalog.Entities;
 using Bookstore.Services.ShoppingBasket.DbContexts;
 using Bookstore.Services.ShoppingBasket.Repositories;
 using Bookstore.Services.ShoppingBasket.Services;
@@ -13,14 +14,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 using Microsoft.OpenApi.Models;
 using Polly;
 using Polly.Extensions.Http;
+using static Microsoft.Extensions.Logging.LogLevel;
 
 namespace Bookstore.Services.ShoppingBasket
 {
     public class Startup
     {
+        
+        public static readonly ILoggerFactory ConsoleLoggerFactory
+            = LoggerFactory.Create(builder =>
+            {
+                builder
+                    .AddFilter((category, level) =>
+                        category == DbLoggerCategory.Database.Command.Name
+                        && level == LogLevel.Information)
+                    .AddConsole();
+            });
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,7 +52,8 @@ namespace Bookstore.Services.ShoppingBasket
             services.AddControllers(configure =>
             {
                 configure.Filters.Add(new AuthorizeFilter(requireAuthenticatedUserPolicy));
-            });
+            }).AddNewtonsoftJson( options => 
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -53,8 +68,9 @@ namespace Bookstore.Services.ShoppingBasket
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IBasketLinesRepository, BasketLinesRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IBasketChangeBookRepository, BasketChangeBookRepository>();
-
+            
             services.AddSingleton<IMessageBus, AzServiceBusMessageBus>();
 
             services.AddHttpClient<IBookCatalogService, BookCatalogService>(c =>
@@ -67,7 +83,9 @@ namespace Bookstore.Services.ShoppingBasket
 
             services.AddDbContext<ShoppingBasketDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLoggerFactory(ConsoleLoggerFactory)
+                    .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    .EnableSensitiveDataLogging(true);;
             });
 
             services.AddSwaggerGen(c =>

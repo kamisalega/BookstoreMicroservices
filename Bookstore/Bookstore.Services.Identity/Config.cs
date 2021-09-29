@@ -4,6 +4,8 @@
 
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityServer4;
+using IdentityServerHost.Quickstart.UI.Resource;
 
 namespace Bookstore.Services.Identity
 {
@@ -14,6 +16,10 @@ namespace Bookstore.Services.Identity
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Email(),
+                new IdentityResources.Address(),
+                new CreditCard()
+                
             };
 
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
@@ -44,7 +50,15 @@ namespace Bookstore.Services.Identity
                     RedirectUris =           { "https://localhost:5000/" },
                     PostLogoutRedirectUris = { "https://localhost:5000/" },
                     AllowedCorsOrigins =     { "https://localhost:5000" },
-                    AllowedScopes = {"openid", "profile","bookstore.fullaccess"}
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        IdentityServerConstants.StandardScopes.Address,
+                        "credit_card",
+                        "bookstore.fullaccess"
+                    }
                 }
             };
     }

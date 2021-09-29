@@ -53,7 +53,7 @@ export class SecurityService {
       client_id: "bookstorem2m",
       client_secret: "eac7008f-1b35-4325-ac8d-4a71932e6088",
       redirect_uri: `${location.origin}/`,
-      scope: 'openid profile bookstore.fullaccess',
+      scope: 'openid profile credit_card email address bookstore.fullaccess',
       response_type: 'id_token token',
       nonce: 'N' + Math.random() + '' + Date.now(),
       state: Date.now() + '' + Math.random()

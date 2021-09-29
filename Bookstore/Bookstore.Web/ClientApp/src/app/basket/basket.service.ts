@@ -1,13 +1,16 @@
 import {Injectable} from '@angular/core';
 import {IBasket} from "../shared/models/basket.model";
-import {Observable, Subject} from "rxjs";
+import {Observable, Subject, throwError} from "rxjs";
 import {DataService} from "../shared/services/data.service";
 import {BasketWrapperService} from "../shared/services/basket.wrapper.service";
 import {Router} from "@angular/router";
 import {ConfigurationService} from "../shared/services/configuration.service";
 import {StorageService} from "../shared/services/storage.service";
 import {SecurityService} from "../shared/services/security.service";
-import {tap} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
+import {HttpErrorResponse} from "@angular/common/http";
+import {IOrder} from "../shared/models/order.model";
+import {IBasketCheckout} from "../shared/models/basketCheckout.model";
 
 @Injectable({
   providedIn: 'root'
@@ -65,17 +68,7 @@ export class BasketService {
   }
 
   addItemToBasket(item): Observable<boolean> {
-    let basketItem = this.basket.basketLines.find(value => value.bookId == item.bookId);
-
-    if (basketItem) {
-      basketItem.bookAmount++;
-    } else {
-      this.basket.basketLines.push(item);
-    }
-    this.basket.bookId = item.bookId;
-    this.basket.basketId = item.basketId;
-    this.basket.bookAmount = this.basket.basketLines.length;
-    return this.setBasketLines(this.basket);
+    return this.setBasketLines(item);
   }
 
   getBasket(): Observable<IBasket> {
@@ -90,17 +83,29 @@ export class BasketService {
     }));
   }
 
-  public setBasketLines(basket): Observable<boolean> {
-    let url = this.basketUrl + '/api/baskets/' + basket.basketId + '/basketlines'
+  handleError(err: HttpErrorResponse) {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
 
-    this.basket = basket;
+      //a client-side or network error occured. Handle it accordingly.
+      errorMessage = `An error occured: ${err.error.message}`;
 
-    return this.service.post(url, basket).pipe<boolean>(tap((response: any) => {
+    } else {
+      //The back-end returned an unsuccessful response code.
+      errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+    }
+    return throwError(errorMessage);
+  }
+
+  public setBasketLines(basketLine): Observable<boolean> {
+    let url = this.basketUrl + '/api/baskets/' + basketLine.basketId + '/basketlines'
+
+    return this.service.post(url, basketLine).pipe<boolean>(tap((response: any) => {
       return true;
     }));
   }
 
-  public updateBasket(basketLineForUpdate): Observable<boolean> {
+  public updateBasketLine(basketLineForUpdate): Observable<boolean> {
     let url = this.basketUrl + '/api/baskets/' + basketLineForUpdate.basketId + '/basketlines/' + basketLineForUpdate.basketLineId;
     return this.service.put(url, basketLineForUpdate).pipe<boolean>(tap((response: any) => {
       return true;
@@ -108,6 +113,7 @@ export class BasketService {
   }
 
   public deleteBasket(basketLineForDelete): Observable<boolean> {
+    this.basket.basketLines = this.basket.basketLines.filter(item => item.basketLineId !== basketLineForDelete.basketLineId);
     let url = this.basketUrl + '/api/baskets/' + basketLineForDelete.basketId + '/basketlines/' + basketLineForDelete.basketLineId;
     return this.service.delete(url).pipe<boolean>(tap((response: any) => {
       return true;
@@ -122,12 +128,12 @@ export class BasketService {
     })
   }
 
-  setBasketId(basketItem): Observable<IBasket> {
+  setBasketId(basket): Observable<IBasket> {
 
     let url = this.basketUrl + '/api/baskets/'
 
     // this.basket.items.push(basketItem);
-    this.basket.bookId = basketItem.bookId;
+    this.basket.bookId = basket.bookId;
 
     return this.service.post(url, this.basket).pipe<IBasket>(
       tap(
@@ -160,5 +166,49 @@ export class BasketService {
     if (!this.basketUrl) {
       this.basketUrl = this.storage.retrieve('basketUrl');
     }
+  }
+
+  updateBasket(basket): Observable<boolean> {
+    let url = this.basketUrl + '/api/baskets/'
+
+    this.basket = basket;
+
+    return this.service.put(url, this.basket).pipe<boolean>(
+      tap(
+        (response: any) => {
+          this.storage.store('basketId', response.basketId)
+          return true;
+        }));
+  }
+
+    mapBasketInfoCheckout(order): IBasketCheckout {
+    let basketCheckout = <IBasketCheckout>{};
+
+    basketCheckout.firstName = order.firstName;
+    basketCheckout.lastName = order.lastName;
+    basketCheckout.email = order.email;
+    basketCheckout.basketId = order.basketId;
+    basketCheckout.address = order.address;
+    basketCheckout.cardExpiration = order.cardExpiration;
+    basketCheckout.cardNumber = order.cardNumber;
+    basketCheckout.cardSecurityNumber = order.cardSecurityNumber;
+    basketCheckout.cardTypeId = order.cardTypeId;
+    basketCheckout.cardHolderName = order.cardHolderName;
+    basketCheckout.basketTotal = 0;
+    basketCheckout.expiration = order.expiration;
+    basketCheckout.buyer = order.buyer;
+
+    return basketCheckout;
+  }
+
+
+  setBasketCheckout(basketCheckout): Observable<boolean> {
+    let url = this.basketUrl + '/api/baskets/checkout';
+    return this.service.post(url, basketCheckout).pipe<boolean>
+    (
+      tap(
+        (response: any) => true
+      )
+    );
   }
 }

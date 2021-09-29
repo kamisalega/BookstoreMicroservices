@@ -9,6 +9,7 @@ import {routing} from "./app.routes";
 import {SharedModule} from "./shared/shared.module";
 import {CatalogModule} from "./catalog/catalog.module";
 import {BasketModule} from "./basket/basket.module";
+import {OrdersModule} from "./orders/orders.module";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {BasketModule} from "./basket/basket.module";
     routing,
     SharedModule.forRoot(),
     CatalogModule,
-    BasketModule
+    BasketModule,
+    OrdersModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]

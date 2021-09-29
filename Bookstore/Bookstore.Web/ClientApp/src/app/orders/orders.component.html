@@ -1,0 +1,38 @@
+<div class="bs-orders">
+  <div class="container">
+    <h1 class="mb-4 mt-5">[ Lista Zamówień ]</h1>
+    <!--    <div class="bs-orders-alert alert" role="alert" [hidden]="!errorReceived">-->
+    <div class="bs-orders-alert alert" role="alert" [hidden]="true">
+      Błąd podczas żądania listy zamówień, spróbuj później
+    </div>
+
+    <div class="bs-orders-wrapper">
+      <article class="bs-orders-titles row">
+        <section class="col-1"></section>
+        <section class="col-3">Data</section>
+        <section class="col-2">Całość</section>
+        <section class="col-2">Status</section>
+        <section class="col-2"></section>
+        <section class="col-2"></section>
+      </article>
+
+      <article class="bs-orders-item divider row">
+        <section class="col-1">1010010101</section>
+        <section class="col-3">30.10.1990</section>
+        <section class="col-2">Razem</section>
+        <section class="col-2">Sprzedano</section>
+        <section class="col-2">
+          <a class="bs-orders-link u-cursor-pointer">Zamknij</a>
+        </section>
+        <section class="col-2">
+          <a class="bs-orders-link">Szczegóły</a>
+        </section>
+      </article>
+
+      <aside class="d-flex justify-content-end mt-5 pr-5">
+        <a class="btn btn-secondary" routerLink="/catalog">Kontynuj zakupy</a>
+      </aside>
+    </div>
+
+  </div>
+</div>

@@ -27,7 +27,7 @@
             <div class="bs-catalog-thumbnail-icon d-flex justify-content-center">
               <img class="bs-catalog-thumbnail-icon-svg" src="assets/images/add.svg"/>
             </div>
-            <img class="bs-catalog-thumbnail" src="{{item.imageUrl}}"/>
+            <img class="bs-catalog-thumbnail" src="{{item.imageUrl}}" (error)="onImageError(item)"/>
           </div>
 
           <div class="bs-catalog-details">

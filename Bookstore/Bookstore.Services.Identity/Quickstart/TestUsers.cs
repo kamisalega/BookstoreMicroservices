@@ -19,10 +19,20 @@ namespace IdentityServerHost.Quickstart.UI
             {
                 var address = new
                 {
-                    street_address = "One Hacker Way",
-                    locality = "Heidelberg",
-                    postal_code = 69118,
-                    country = "Germany"
+                    street_address = "ul. Staszica 27/33",
+                    locality = "Rzeszów",
+                    postal_code = "37-312",
+                    state = "Podkarpackie",
+                    country = "Polska"
+                };
+
+                var credit_card = new
+                {
+                    card_expiration = "10/22",
+                    card_number = 901030116920000456,
+                    card_security_number = 538,
+                    card_type = "Visa",
+                    card_holder = "Kamil Sałęga"
                 };
 
                 return new List<TestUser>
@@ -40,7 +50,8 @@ namespace IdentityServerHost.Quickstart.UI
                             new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
+                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address),
+                                IdentityServerConstants.ClaimValueTypes.Json)
                         }
                     },
                     new TestUser
@@ -56,7 +67,10 @@ namespace IdentityServerHost.Quickstart.UI
                             new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
+                            new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address),
+                                IdentityServerConstants.ClaimValueTypes.Json),
+                            new Claim("credit_card", JsonSerializer.Serialize(credit_card),
+                                IdentityServerConstants.ClaimValueTypes.Json)
                         }
                     }
                 };

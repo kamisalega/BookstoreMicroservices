@@ -66,7 +66,7 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Basket>> UpdateAllBasketAsync(BasketForCreation basketForCreation)
+        public async Task<ActionResult<Basket>> AddBasketAsync(BasketForCreation basketForCreation)
         {
             var basketEntity = await basketRepository.GetBasketByUserId(basketForCreation.UserId);
 
@@ -85,7 +85,41 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
 
             // return Ok(basketToReturn);
         }
+        
+        [HttpPut]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Basket),(int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Basket>> UpdateAllBasketAsync(BasketForUpdating basketForUpdating)
+        {
+            if (basketForUpdating.BasketLines == null || !basketForUpdating.BasketLines.Any())
+            {
+                return BadRequest("Need to pass at least one basket line");
+            }
+        
+            var basketEntity = await basketRepository.GetBasketById(basketForUpdating.BasketId); 
+        
+            if (basketEntity == null)
+            {
+                basketEntity = mapper.Map<Entities.Basket>(basketForUpdating);
+                basketRepository.AddBasket(basketEntity);
+                await basketRepository.SaveChanges();
+            }
+        
+            var bookCalculated = basketForUpdating.BasketLines.GroupBy(x => x.BookId, x => x,
+                (k, i) => new { BookId = k, Books = i }).Select(groupedBook =>
+            {
+                var book = groupedBook.Books.First();
+                book.BookAmount = groupedBook.Books.Sum(i => i.BookAmount);
+                return book;
+            });
+        
+            var basketToReturn = mapper.Map<Basket>(basketEntity);
+        
+            return basketToReturn;
+        
+        }
 
+        
         [HttpPut("{basketId}/coupon")]
         [ProducesResponseType((int)HttpStatusCode.Accepted)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -122,7 +156,7 @@ namespace Bookstore.Services.ShoppingBasket.Controllers
 
                 BasketCheckoutMessage basketCheckoutMessage = mapper.Map<BasketCheckoutMessage>(basketCheckout);
                 basketCheckoutMessage.BasketLines = new List<BasketLineMessage>();
-                int total = 0;
+                double total = 0;
 
                 foreach (var b in basket.BasketLines)
                 {
